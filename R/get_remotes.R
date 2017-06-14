@@ -3,6 +3,9 @@
 #'
 #' @return Character vector of remotes
 #' @export
+#' @examples
+#' path = example_description_file()
+#' get_remotes(path)
 get_remotes = function(path = "DESCRIPTION"){
   if (is.character(path)) {
     path = read_dcf(path)

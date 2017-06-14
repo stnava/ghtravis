@@ -12,3 +12,7 @@ Character vector of remotes
 \description{
 Parse a DESCRIPTION file and returns the remotes
 }
+\examples{
+path = example_description_file()
+get_remotes(path)
+}

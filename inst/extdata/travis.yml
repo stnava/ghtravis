@@ -1,0 +1,134 @@
+# use containers
+sudo: false
+# cache local R libraries directory:
+cache: packages
+os:
+  - linux
+  - osx
+
+r_build_args: --no-build-vignettes --no-manual
+env:
+  global:
+  - R_BUILD_ARGS="--no-build-vignettes --no-manual"
+  - R_CHECK_ARGS=" --timings --as-cran"
+  - R_CHECK_TIME="TRUE"
+  - R_CHECK_TESTS="TRUE"
+  - _R_CHECK_TIMINGS_="0"
+  - _R_CHECK_FORCE_SUGGESTS_="0"
+  - BOOTSTRAP_LATEX=1
+  # - WARNINGS_ARE_ERRORS=0
+
+osx_image: xcode8.2
+
+language: r
+r:
+  - release
+
+matrix:
+   allow_failures:
+    - os: osx
+
+cran: http://cran.rstudio.com
+
+before_install:
+  - mkdir -p ~/.R
+  - export ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS=1
+  - export CC=clang
+  - export CXX=clang++
+  - echo "CC=clang" >  ~/.R/Makevars
+  - echo "CXX=clang++" >> ~/.R/Makevars
+  - echo "CXX1X=clang++" >> ~/.R/Makevars
+  - echo "CXX1XSTD=-std=c++11" >> ~/.R/Makevars
+  - source ~/.R/Makevars
+  # New stuff
+  - wget -O travis_helpers.sh http://bit.ly/travis_helpers
+  - source travis_helpers.sh
+  - rm travis_helpers.sh
+  - if [ "$TRAVIS_OS_NAME" == "linux" ];
+    then cmake --version;
+    wget -O cmake.sh --no-check-certificate https://cmake.org/files/v3.4/cmake-3.4.0-rc1-Linux-x86_64.sh;
+    sh cmake.sh --skip-license --prefix=${HOME};
+    fi
+  - export PATH=$HOME/bin/:$PATH
+  - Rscript -e 'if (!requireNamespace("devtools", quietly = TRUE)) install.packages("devtools")'
+  - itkrrel=0.0.1
+  - gh_binary_install ITKR stnava ${itkrrel} latest
+  - gh_user=stnava
+  - ANTsRCorerel=latest
+  - reldir=0.2
+  - gh_binary_install ANTsRCore ${gh_user} ${ANTsRCorerel} ${reldir}
+  # - basedir=${PWD}
+  # - cd ..
+  # - cd $basedir
+  # - cd ~/
+  # - Rscript -e 'if (!"Rcpp" %in% rownames(installed.packages())) install.packages("Rcpp", dependencies = TRUE)'
+  # - Rscript -e 'if (!"devtools" %in% rownames(installed.packages())) install.packages("devtools", dependencies = TRUE)'
+  # - itkrrel=0.0.1
+  # - if [ "$TRAVIS_OS_NAME" == "linux" ];
+  #   then wget -O ITKR.tar.gz https://github.com/stnava/ITKR/releases/download/latest/ITKR_${itkrrel}_R_x86_64-pc-linux-gnu.tar.gz;
+  #   R CMD INSTALL ITKR.tar.gz; fi
+  # - if [ "$TRAVIS_OS_NAME" == "osx" ];
+  #   then wget -O ITKR.tgz http://github.com/stnava/ITKR/releases/download/latest/ITKR_${itkrrel}.tgz;
+  #   R CMD INSTALL ITKR.tgz; fi
+  # - Rscript -e 'p = c("RcppEigen", "magrittr"); p = setdiff(p, installed.packages()); if (length(p)) install.packages(p);'
+  # - gh_user=stnava
+  # - ANTsRCorerel=0.2
+  # - reldir=latest
+  # - if [ "$TRAVIS_OS_NAME" == "linux" ];
+  #   then wget -O ANTsRCore.tar.gz https://github.com/${gh_user}/ANTsRCore/releases/download/${reldir}/ANTsRCore_${ANTsRCorerel}_R_x86_64-pc-linux-gnu.tar.gz;
+  #   R CMD INSTALL ANTsRCore.tar.gz; fi
+  # - if [ "$TRAVIS_OS_NAME" == "osx" ];
+  #   then wget -O ANTsRCore.tgz http://github.com/${gh_user}/ANTsRCore/releases/download/${reldir}/ANTsRCore_${ANTsRCorerel}.tgz;
+  #   R CMD INSTALL ANTsRCore.tgz; fi
+  # - cd ${basedir}
+  # # removing remotes
+  # - Rscript -e 'devtools::source_url("https://gist.githubusercontent.com/muschellij2/69c48f469ab34cc05752361645ffa8e0/raw/57e7d3b22907699d260f863a0d337a12567ffc30/rewrite_dcf.R"); rewrite_dcf(drop_remotes = c("ANTsRCore", "ITKR"));'
+
+# Build and check package
+script:
+  - source ~/.R/Makevars
+  - export CXX=clang++
+  - export CC=clang
+  - cd ..
+  - travis_wait 100 R CMD build ANTsR ${R_BUILD_ARGS}
+  - PKG_FILE_NAME=$(ls -1t *.tar.gz | head -n 1)
+  - if [[ ${#TRAVIS_TAG} -eq 0 ]]; then travis_wait 100 R CMD check ${R_CHECK_ARGS} "${PKG_FILE_NAME}" --no-manual; fi # --as-cran
+  - mydir=${PWD}
+  - if [[ ${#TRAVIS_TAG} -gt 0 ]]; then travis_wait 100 R CMD INSTALL --build ANTsR; PKG_FILE_NAME=$(ls -1t *.tar.gz | head -n 1); if [ "$TRAVIS_OS_NAME" == "osx" ];  then  PKG_FILE_NAME=$(ls -1t *.tgz | head -n  1);  fi; fi
+
+
+# report coverage rate to coveralls
+# after_success:
+  # - cd $mydir
+#  - cd ANTsR
+#  - travis_wait 100 Rscript -e 'covr::coveralls( type = "examples" )'
+# takes too long, should add to matrix
+
+after_failure:
+  - echo ${TRAVIS_BUILD_DIR}
+  - dn=`dirname ${basedir}`
+  - dn=/home/travis/build/stnava/
+  - cat ${dn}/ANTsR.Rcheck/00install.out
+  - cat ${dn}/ANTsR.Rcheck/00check.log
+
+# send e-mails if stuff changes
+notifications:
+  email:
+    recipients:
+    - stnava@gmail.com
+    - arman.eshaghi@gmail.com
+    - jeff.duda@gmail.com
+    on_success: change
+    on_failure: always
+
+deploy:
+  provider: releases
+  api_key:
+    secure: VevZHK5WDwd2mFSrF3+b2jTRzImb6juOgewcOvZ8LJ2S70khn64Kx4+JGUvk5miKWVbKnHIhPxOJY50muO9sT15ApP+HFZYpiVpx4l/hEypk9zmJD+f+ERuN7j8elCzUZqet3v77XD+pBcYMxFARew4gGDkG2LO5casij0YNiyQ=
+  file: ${PKG_FILE_NAME}
+  skip_cleanup: true
+  overwrite: true
+  on:
+    repo: stnava/ANTsR
+    tags: true
+    all_branches: true
