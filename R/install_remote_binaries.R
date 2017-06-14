@@ -13,6 +13,7 @@
 #' path = example_description_file()
 #' install_remote_binaries(path = path)
 #' }
+#' @importFrom utils install.packages installed.packages
 install_remote_binaries = function(
   path = "DESCRIPTION",
   package = NULL,

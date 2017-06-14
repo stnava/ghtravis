@@ -32,6 +32,7 @@ parse_one_remote <- function(x) {
   fun(repo)
 }
 
+#' @rdname parse_one_remote
 #' @export
 parse_remotes = function(x) {
   lapply(x, parse_one_remote)

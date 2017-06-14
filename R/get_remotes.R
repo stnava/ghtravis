@@ -1,6 +1,8 @@
 #' @title Get the Remotes from a Package
 #' @description Parse a DESCRIPTION file and returns the remotes
 #'
+#' @param path Path to DESCRIPTION file
+#'
 #' @return Character vector of remotes
 #' @export
 #' @examples

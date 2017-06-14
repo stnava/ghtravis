@@ -25,6 +25,7 @@ get_remote_info = function(
   return(parsed)
 }
 
+#' @rdname get_remote_info
 #' @export
 remote_package_names = function(path = "DESCRIPTION") {
   parsed = get_remote_info(path = path)

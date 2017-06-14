@@ -2,9 +2,12 @@
 % Please edit documentation in R/parse_one_remote.R
 \name{parse_one_remote}
 \alias{parse_one_remote}
+\alias{parse_remotes}
 \title{Parse a Remote file}
 \usage{
 parse_one_remote(x)
+
+parse_remotes(x)
 }
 \arguments{
 \item{x}{Parses a remote field}

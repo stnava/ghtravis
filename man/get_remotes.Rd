@@ -6,6 +6,9 @@
 \usage{
 get_remotes(path = "DESCRIPTION")
 }
+\arguments{
+\item{path}{Path to DESCRIPTION file}
+}
 \value{
 Character vector of remotes
 }

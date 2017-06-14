@@ -23,6 +23,7 @@ package_needs_update = function(
                  v["installed"]) > 0
 }
 
+#' @rdname package_needs_update
 #' @export
 set_update_var = function(...) {
   res = package_needs_update(...)

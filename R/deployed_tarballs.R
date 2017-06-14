@@ -8,7 +8,7 @@
 #'
 #' @return Version number character vector
 #' @export
-#'
+#' @importFrom utils download.file untar
 #' @examples
 #' deployed_tarball_version(  repo = "stnava/ITKR", tag = "latest")
 deployed_tarball_version = function(
@@ -45,7 +45,7 @@ deployed_tarball_version = function(
 }
 
 
-
+#' @rdname deployed_tarball_version
 #' @export
 deployed_tarball = function(
   repo = "stnava/ITKR",

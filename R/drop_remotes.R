@@ -1,6 +1,6 @@
-# gist: 69c48f469ab34cc05752361645ffa8e0
 #' @title Drop Remotes from DESCRIPTION
-#' @description
+#' @description Reads a DESCRIPTION file, drops the remotes, and then rewrites
+#' the DESCRIPTION file
 #'
 #' @param path Path to DESCRIPTION file
 #' @param drop_remotes Packages for Remotes to Drop

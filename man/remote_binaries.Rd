@@ -10,6 +10,8 @@ remote_binaries(remotes = NULL, path = "DESCRIPTION", package = NULL)
 \item{remotes}{Remotes to get the binaries for}
 
 \item{path}{Path to DESCRIPTION field}
+
+\item{package}{packages to subset if necessary}
 }
 \value{
 List of remote binaries
@@ -20,5 +22,7 @@ Gets Remotes, gets Binaries form GH
 \examples{
 remote_binaries(remotes = "muschellij2/neurobase")
 path = example_description_file()
-remote_binaries(path)
+if (file.exists(path)) {
+   remote_binaries(path)
+}
 }

@@ -2,9 +2,12 @@
 % Please edit documentation in R/deployed_tarballs.R
 \name{deployed_tarball_version}
 \alias{deployed_tarball_version}
+\alias{deployed_tarball}
 \title{Deployed Tarball Version}
 \usage{
 deployed_tarball_version(repo = "stnava/ITKR", tag = "latest")
+
+deployed_tarball(repo = "stnava/ITKR", tag = "latest", version = NULL)
 }
 \arguments{
 \item{repo}{GitHub repository name}

@@ -8,6 +8,9 @@
 #' example_description_file()
 example_description_file = function() {
   x = system.file("extdata", "DESCRIPTION", package = "ghtravis")
+  if (x == "") {
+    return("")
+    }
   tfile = tempfile()
   dir.create(tfile)
   file.copy(x, to = tfile, overwrite = TRUE)
@@ -15,9 +18,13 @@ example_description_file = function() {
   return(x)
 }
 
+#' @rdname example_description_file
 #' @export
 example_travis_file = function() {
   x = system.file("extdata", "travis.yml", package = "ghtravis")
+  if (x == "") {
+    return("")
+  }
   tfile = tempfile()
   dir.create(tfile)
   file.copy(x, to = tfile, overwrite = TRUE)

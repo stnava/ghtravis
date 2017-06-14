@@ -15,7 +15,8 @@ drop_remotes(path = "DESCRIPTION", drop_remotes = NULL)
 Rewrites the DESCRIPTION file without remotes
 }
 \description{
-
+Reads a DESCRIPTION file, drops the remotes, and then rewrites
+the DESCRIPTION file
 }
 \examples{
 path = example_description_file()

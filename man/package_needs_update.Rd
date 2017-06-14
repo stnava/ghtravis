@@ -2,9 +2,12 @@
 % Please edit documentation in R/package_needs_update.R
 \name{package_needs_update}
 \alias{package_needs_update}
+\alias{set_update_var}
 \title{Check Package Versions}
 \usage{
 package_needs_update(version, package)
+
+set_update_var(...)
 }
 \arguments{
 \item{version}{Version of package}

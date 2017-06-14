@@ -2,9 +2,12 @@
 % Please edit documentation in R/get_remote_info.R
 \name{get_remote_info}
 \alias{get_remote_info}
+\alias{remote_package_names}
 \title{Get Remote Information}
 \usage{
 get_remote_info(path = "DESCRIPTION")
+
+remote_package_names(path = "DESCRIPTION")
 }
 \arguments{
 \item{path}{Path to DESCRIPTION file}

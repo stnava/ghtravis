@@ -2,9 +2,12 @@
 % Please edit documentation in R/example_description_file.R
 \name{example_description_file}
 \alias{example_description_file}
+\alias{example_travis_file}
 \title{Example DESCRIPTION File}
 \usage{
 example_description_file()
+
+example_travis_file()
 }
 \value{
 Path of DESCRIPTION file
