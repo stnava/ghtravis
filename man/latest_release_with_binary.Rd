@@ -16,5 +16,8 @@ URL of the binary
 Parses a remote and gets a binary Get the Latest Binary for a repository
 }
 \examples{
-latest_release_with_binary("stnava/ANTsR")
+\dontrun{
+repo = "stnava/ANTsR"
+latest_release_with_binary(repo)
+}
 }

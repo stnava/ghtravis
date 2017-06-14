@@ -6,9 +6,11 @@
 #' @return URL of the binary
 #' @export
 #'
-#' @examples
-#' latest_release_with_binary("stnava/ANTsR")
-#' @importFrom httr GET content
+#' @examples \dontrun{
+#' repo = "stnava/ANTsR"
+#' latest_release_with_binary(repo)
+#' }
+#' @importFrom httr GET content stop_for_status
 latest_release_with_binary = function(repo){
   info = parse_one_remote(repo)
   user = info$username
@@ -20,6 +22,7 @@ latest_release_with_binary = function(repo){
   ###############################
   tag_url = paste0("https://api.github.com/repos/", repo, "/tags")
   tag_res = httr::GET(tag_url)
+  httr::stop_for_status(tag_res)
   tag_content = httr::content(tag_res)
   unlist_df = function(x) {
     x = unlist(x)
@@ -56,6 +59,7 @@ latest_release_with_binary = function(repo){
   url = paste0("https://api.github.com/repos/", repo, "/releases")
 
   res = httr::GET(url)
+  httr::stop_for_status(res)
 
   ##########################
   # all releases
