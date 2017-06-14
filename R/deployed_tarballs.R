@@ -1,11 +1,27 @@
+#' @title Deployed Tarball Version
+#' @description Downloads a source tarball from GitHub and parses the
+#' version in that source
+#'
+#' @param repo GitHub repository name
+#' @param tag Tag for the tarball
+#' @param version version of package tarball if applicable
+#'
+#' @return Version number character vector
+#' @export
+#'
+#' @examples
+#' deployed_tarball_version(  repo = "stnava/ITKR", tag = "latest")
 deployed_tarball_version = function(
-  package = "ITKR",
-  user = "stnava",
+  repo = "stnava/ITKR",
   tag = "latest"
 ) {
+  repo = parse_remotes(x = repo)
+  repo = sapply(repo, function(x) {
+    paste0(x$username, "/", x$repo)
+  })
   # bash workaround
   url = "https://github.com/"
-  url = paste0(url, user, "/", package,
+  url = paste0(url, repo,
                "/archive/",
                tag,
                ".tar.gz")
@@ -30,12 +46,9 @@ deployed_tarball_version = function(
 
 
 
-############################################
-# Construct the tarball filename
-############################################
+#' @export
 deployed_tarball = function(
-  package = "ITKR",
-  user = "stnava",
+  repo = "stnava/ITKR",
   tag = "latest",
   version = NULL
 ) {
@@ -48,9 +61,7 @@ deployed_tarball = function(
 
   if (is.null(version)) {
     version = deployed_tarball_version(
-      package = package,
-      user = user,
-      tag = tag)
+      repo = repo, tag = tag)
   }
   if (is.null(version)) {
     stop("Version is not correctly parsed!")
@@ -58,8 +69,11 @@ deployed_tarball = function(
   # bash workaround
   ext = sys_ext()
 
+  package = sapply(repo, function(x) {
+     x$repo
+  })
   url = "https://github.com/"
-  url = paste0(url, user, "/", package,
+  url = paste0(url, repo,
                "/releases/download/",
                tag,
                "/", package, "_", version,

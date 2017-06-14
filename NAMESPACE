@@ -2,6 +2,8 @@
 
 export(dcf_package_version)
 export(deploy_travis)
+export(deployed_tarball)
+export(deployed_tarball_version)
 export(drop_remotes)
 export(example_description_file)
 export(example_travis_file)
