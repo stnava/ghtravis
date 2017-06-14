@@ -8,11 +8,12 @@
 #' @return List of remote binaries
 #' @export
 #'
-#' @examples
+#' @examples \dontrun{
 #' remote_binaries(remotes = "muschellij2/neurobase")
 #' path = example_description_file()
 #' if (file.exists(path)) {
 #'    remote_binaries(path)
+#' }
 #' }
 remote_binaries = function(
   remotes = NULL,
