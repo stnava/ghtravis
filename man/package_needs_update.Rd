@@ -13,6 +13,9 @@ package_needs_update(version, package)
 
 \item{...}{not used}
 }
+\value{
+Output from \code{\link{compareVersion}}
+}
 \description{
 Looks in installed packages to see if a new version is needed
 }

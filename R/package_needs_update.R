@@ -19,7 +19,7 @@ package_needs_update = function(
   v = c("version" = version,
         "installed" = cur_ver)
   v = make_full_version(v)
-  compareVersion(v["version"],
+  utils::compareVersion(v["version"],
                  v["installed"]) > 0
 }
 

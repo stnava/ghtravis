@@ -4,10 +4,12 @@ Title: Interfaces with GitHub API and Travis
 Version: 0.1.0
 Author: John Muschelli
 Maintainer: John Muschelli <muschellij2@gmail.com>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Description: Interfaces and compares things on 'GitHub' 'API' and 'Travis' 'CI'.
 Imports:
-    
+    utils,
+    devtools,
+    yaml,
+    httr
 License: GPL-2
 Encoding: UTF-8
 LazyData: true

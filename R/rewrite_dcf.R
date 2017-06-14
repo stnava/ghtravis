@@ -1,100 +1,4 @@
 # gist: 69c48f469ab34cc05752361645ffa8e0
-
-read_dcf <- function(path = "DESCRIPTION") {
-  file = file(path)
-  on.exit({
-    close(file)
-  })
-  fields <- colnames(read.dcf(file))
-  dcf = as.list(read.dcf(file,
-                         keep.white = fields, all = TRUE)[1, ])
-  return(list(fields = fields,
-              dcf = dcf))
-}
-
-
-
-split_remotes <- function(x) {
-  trimws(unlist(strsplit(x, ",[[:space:]]*")))
-}
-
-get_remotes = function(path = "DESCRIPTION"){
-  if (is.character(path)) {
-    path = read_dcf(path)
-    path = path$dcf
-  }
-  remotes = path$Remotes[[1]]
-  remotes = trimws(remotes)
-  remotes = split_remotes(remotes)
-  if (is.null(remotes)) {
-    remotes = ""
-  }
-  return(remotes)
-}
-
-parse_one_remote <- function(x) {
-  pieces <- strsplit(x, "::", fixed = TRUE)[[1]]
-
-  if (length(pieces) == 1) {
-    type <- "github"
-    repo <- pieces
-  } else if (length(pieces) == 2) {
-    type <- pieces[1]
-    repo <- pieces[2]
-  } else {
-    stop("Malformed remote specification '",
-         x, "'", call. = FALSE)
-  }
-  fun <- tryCatch(get(
-    paste0(tolower(type), "_remote"),
-    envir = asNamespace("devtools"),
-    mode = "function", inherits = FALSE),
-    error = function(e) stop("Unknown remote type: ",
-                             type, call. = FALSE)
-  )
-
-  fun(repo)
-}
-
-parse_remotes = function(x) {
-  lapply(x, parse_one_remote)
-}
-
-
-get_remote_info = function(
-  path = "DESCRIPTION") {
-
-  remotes = get_remotes(path)
-  remotes = split_remotes(remotes)
-  if (length(remotes) == 0) {
-    remotes = ""
-  }
-
-  parsed = parse_remotes(remotes)
-  names(parsed) = remotes
-  return(parsed)
-}
-
-remote_package_names = function(path = "DESCRIPTION") {
-  parsed = get_remote_info(path = path)
-  pack_with_remote = sapply(parsed, function(x) {
-    x$repo
-  })
-  pack_with_remote
-}
-
-subset_remote = function(
-  path = "DESCRIPTION",
-  package = "ANTsR") {
-
-  parsed = remote_package_names(path = path)
-  remotes = names(parsed)
-  if (!is.null(package)) {
-    remotes = remotes[(parsed %in% package)]
-  }
-  return(remotes)
-}
-
 rewrite_dcf = function(
   path = "DESCRIPTION",
   drop_remotes = c("ANTsR", "ITKR")) {
@@ -142,8 +46,10 @@ install_remote_no_dep = function(path = "DESCRIPTION",
                                  package = "ANTsR", ...) {
 
   remote = subset_remote(path = path, package = package)
-  devtools::install_github(remote,
+  if (length(remote) > 0) {
+    devtools::install_github(remote,
                            upgrade_dependencies = FALSE, ...)
+  }
 }
 
 ############################################
@@ -187,11 +93,6 @@ deploy_travis = function(api_key,
   return(travis_file)
 }
 
-package_version = function(path = "DESCRIPTION"){
-  res = read_dcf(path)
-  res$dcf$Version
-}
-
 ############################################
 # Construct the tarball filename
 # with just a tag - downloads the source
@@ -222,21 +123,12 @@ deployed_tarball_version = function(
   }
   untar(destfile, files = dcf, exdir = tempdir())
   dcf = file.path(tempdir(), dcf)
-  version = package_version(dcf)
+  version = dcf_package_version(dcf)
   return(version)
 }
 
 
-sys_ext = function(){
-  os = Sys.info()
-  os = os[["sysname"]]
-  ext = switch(
-    os,
-    Linux = "_R_x86_64-pc-linux-gnu.tar.gz",
-    Darwin = ".tgz"
-  )
-  return(ext)
-}
+
 ############################################
 # Construct the tarball filename
 ############################################
@@ -289,120 +181,7 @@ deployed_tarball = function(
 # based on DESCRIPTION
 # repo = "muschellij2/neurobase@asdf"
 
-latest_release_with_binary = function(repo){
-  info = parse_one_remote(repo)
-  user = info$username
-  package = info$repo
-  ref = info$ref
-  repo = paste0(user, "/", package)
-  ###############################
-  # Get teh SHAs from the tags
-  ###############################
-  tag_url = paste0("https://api.github.com/repos/", repo, "/tags")
-  tag_res = httr::GET(tag_url)
-  tag_content = httr::content(tag_res)
-  unlist_df = function(x) {
-    x = unlist(x)
-    x = as.data.frame(t(x), stringsAsFactors = FALSE)
-  }
-  ensure_colnames = function(x, cn) {
-    sd = setdiff(colnames(x), cn)
-    for (isd in sd) {
-      x[, isd] = NA
-    }
-    sd = setdiff(cn, colnames(x))
-    for (isd in sd) {
-      x[, isd] = NA
-    }
-    return(x)
-  }
-  bind_list = function(L) {
-    L = lapply(L, unlist_df)
-    cn = sapply(L, colnames)
-    cn = unique(c(unlist(cn)))
-    L = lapply(L, function(x){
-      x = ensure_colnames(x, cn)
-      x[, cn]
-    })
-    L = do.call("rbind", L)
-    return(L)
-  }
 
-  tag_content = bind_list(tag_content)
-  cn = colnames(tag_content)
-  cn[ cn == "name"] = "tag_name"
-  colnames(tag_content) = cn
-
-  url = paste0("https://api.github.com/repos/", repo, "/releases")
-
-  res = httr::GET(url)
-
-  ##########################
-  # all releases
-  ##########################
-  hdrs = c("url", "assets_url", "upload_url", "html_url", "id", "tag_name",
-           "target_commitish", "name", "draft", "prerelease",
-           "created_at", "published_at", "tarball_url", "zipball_url")
-
-
-  assets_hdrs = c("asset_updated_at", "asset_created_at",
-                  "asset_name", "asset_label", "asset_download_count",
-                  "asset_browser_download_url")
-  cr = httr::content(res)
-  df = lapply(cr, function(x) {
-    dd = unlist_df(x[hdrs])
-    dd = ensure_colnames(dd, hdrs)
-
-    assets = bind_list(x$assets)
-    if (!is.null(assets)) {
-      colnames(assets) = paste0("asset_", colnames(assets))
-      assets = ensure_colnames(assets, assets_hdrs)
-      ret = merge(dd, assets, all = TRUE)
-      return(ret)
-    } else {
-      return(NULL)
-    }
-  })
-  df = do.call("rbind", df)
-
-  if (is.null(df)) {
-    return(NA)
-  }
-  if (nrow(df) == 0) {
-    return(NA)
-  }
-  cn = c("asset_updated_at", "asset_created_at",
-         "tag_name", "created_at", "published_at",
-         "asset_name", "asset_label", "asset_download_count",
-         "asset_browser_download_url")
-  df = df[, cn]
-
-  df = merge(tag_content, df, by = "tag_name", all.x = TRUE)
-
-  make_time = function(times) {
-    strptime(times, format = "%Y-%m-%dT%H:%M:%SZ")
-  }
-  df$created_at = make_time(df$created_at)
-  df$published_at = make_time(df$published_at)
-  df$asset_updated_at = make_time(df$asset_updated_at)
-  df$asset_created_at = make_time(df$asset_created_at)
-
-
-  ddf = df
-  ddf = ddf[ grep(sys_ext(), ddf$asset_name, fixed = TRUE),]
-  if (ref %in% ddf$commit.sha) {
-    ddf = ddf[ ddf$commit.sha %in% ref, ]
-  }
-  ord = order(ddf$asset_created_at, decreasing = TRUE)
-  ddf = ddf[ord, ]
-  if (nrow(ddf) > 0) {
-    ddf = ddf[1,]
-    url = ddf$asset_browser_download_url
-  } else {
-    url = NA
-  }
-  return(url)
-}
 
 remote_binaries = function(remotes = NULL,
                            path = "DESCRIPTION") {

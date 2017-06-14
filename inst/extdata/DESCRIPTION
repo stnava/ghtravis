@@ -1,0 +1,15 @@
+Package: DESCRIPT
+Type: Package
+Title: Test Package
+Version: 0.6
+Date: 2017-06-06
+Author: My Tester
+Maintainer: My Tester <test@test.com>
+Description:  Blah
+License: GPL-2
+LazyLoad: yes
+Depends: methods, ANTsRCore (>= 0.2)
+Imports: ITKR, ANTsRCore, psych
+Remotes: muschellij2/ITKR, muschellij2/ANTsRCore, cran/psych@084bdd0ae2630cf31c26d97a6e13e59d3f0f66e6
+VignetteBuilder: knitr
+RoxygenNote: 6.0.1
