@@ -51,10 +51,15 @@ latest_release_with_binary = function(repo){
     return(L)
   }
 
+
   tag_content = bind_list(tag_content)
-  cn = colnames(tag_content)
-  cn[ cn == "name"] = "tag_name"
-  colnames(tag_content) = cn
+  if (!is.null(tag_content)) {
+    if (ncol(tag_content) > 0) {
+      cn = colnames(tag_content)
+      cn[ cn == "name"] = "tag_name"
+      colnames(tag_content) = cn
+    }
+  }
 
   url = paste0("https://api.github.com/repos/", repo, "/releases")
 
@@ -73,6 +78,9 @@ latest_release_with_binary = function(repo){
                   "asset_name", "asset_label", "asset_download_count",
                   "asset_browser_download_url")
   cr = httr::content(res)
+  if (length(cr) == 0 ) {
+    return(NA)
+  }
   df = lapply(cr, function(x) {
     dd = unlist_df(x[hdrs])
     dd = ensure_colnames(dd, hdrs)
