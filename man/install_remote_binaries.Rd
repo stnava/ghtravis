@@ -28,6 +28,8 @@ Gets Remotes, gets Binaries form GH, and installs them, then
 drops them from Remotes field
 }
 \examples{
+\dontrun{
 path = example_description_file()
 install_remote_binaries(path = path)
+}
 }
