@@ -72,23 +72,26 @@ install_remote_binaries = function(
       }
     }
     # if (!drop_all) {
-      # ip = installed.packages()
-      # need to check versions!
+    # ip = installed.packages()
+    # need to check versions!
+    if (is.null(remotes)) {
+
       keep_packs = update_these_packages(path = path)
       # utils::remove.packages(keep_packs)
       keep = (packs %in% keep_packs)
-      if (!all(keep)) {
+      if (any(keep)) {
         warning(
           paste0(
-            "Packages: ", paste(packs[keep_packs], collapse = ","),
-                "have installed binary, but version not correct!")
+            "Packages: ", paste(packs[keep], collapse = ","),
+            " have installed binary, but version not correct!")
         )
       }
       packs = packs[ !keep ]
-    # }
+      # }
 
-    if (file.exists(path) & !missing(path)) {
-      drop_remotes(path = path, drop_remotes = packs)
+      if (file.exists(path)) {
+        drop_remotes(path = path, drop_remotes = packs)
+      }
     }
   }
   return(NULL)

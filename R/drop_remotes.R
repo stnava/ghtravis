@@ -21,6 +21,9 @@ drop_remotes = function(
   res = rres$dcf
   # nres = names(res)
   remotes = get_remotes(res)
+  if (length(remotes) == 0) {
+    return(path)
+  }
 
   parsed = parse_remotes(remotes)
   pack_with_remote = sapply(parsed, function(x) {
