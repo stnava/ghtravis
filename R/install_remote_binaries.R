@@ -2,7 +2,10 @@
 #' @description Gets Remotes, gets Binaries form GH, and installs them, then
 #' drops them from Remotes field
 #'
-#' @param path Path to DESCRIPTION file
+#' @param path Path to DESCRIPTION file,
+#' passed to \code{\link{remote_binaries}}
+#' @param remotes Remotes to get binaries for - in case not going from DESCRIPTION,
+#' passed to \code{\link{remote_binaries}}
 #' @param package Specific package to install
 #' @param drop_all If TRUE, then will only drop packages that are installed
 #' @param verbose Print diagnostic messages
@@ -17,11 +20,12 @@
 #' @importFrom utils install.packages installed.packages
 install_remote_binaries = function(
   path = "DESCRIPTION",
+  remotes = NULL,
   package = NULL,
   drop_all = TRUE,
   verbose = TRUE
 ) {
-  urls = remote_binaries(path = path)
+  urls = remote_binaries(path = path, remotes = remotes)
   if (!is.null(package)) {
     if (package != "") {
       urls = urls[intersect(package, names(urls))]

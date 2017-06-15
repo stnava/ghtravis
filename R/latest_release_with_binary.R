@@ -14,7 +14,7 @@
 #' @importFrom httr GET content stop_for_status authenticate
 #' @importFrom devtools github_pat
 latest_release_with_binary = function(repo,
-                                      pat = NULL, 
+                                      pat = NULL,
                                       ...){
   github_auth <- function(token) {
     if (is.null(token)) {
@@ -23,9 +23,9 @@ latest_release_with_binary = function(repo,
       httr::authenticate(token, "x-oauth-basic", "basic")
     }
   }
-  
+
   if (is.null(pat)) {
-    pat = devtools::github_pat()
+    pat = devtools::github_pat(quiet = TRUE)
   }
   info = parse_one_remote(repo)
   user = info$username

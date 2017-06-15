@@ -4,11 +4,15 @@
 \alias{install_remote_binaries}
 \title{Install Binaries from Remotes}
 \usage{
-install_remote_binaries(path = "DESCRIPTION", package = NULL,
-  drop_all = TRUE, verbose = TRUE)
+install_remote_binaries(path = "DESCRIPTION", remotes = NULL,
+  package = NULL, drop_all = TRUE, verbose = TRUE)
 }
 \arguments{
-\item{path}{Path to DESCRIPTION file}
+\item{path}{Path to DESCRIPTION file,
+passed to \code{\link{remote_binaries}}}
+
+\item{remotes}{Remotes to get binaries for - in case not going from DESCRIPTION,
+passed to \code{\link{remote_binaries}}}
 
 \item{package}{Specific package to install}
 

@@ -32,6 +32,7 @@ install_remotes_no_dep = function(
     return(NULL)
   }
   lapply(remotes, devtools::install_github,
+         auth_token = github_pat(quiet = TRUE),
          upgrade_dependencies = FALSE, ...)
   if (drop) {
     drop_remotes(drop_remotes = remotes)
