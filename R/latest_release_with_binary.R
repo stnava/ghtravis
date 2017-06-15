@@ -7,10 +7,9 @@
 #' @return URL of the binary
 #' @export
 #'
-#' @examples \dontrun{
+#' @examples
 #' repo = "stnava/ANTsR"
 #' latest_release_with_binary(repo)
-#' }
 #' @importFrom httr GET content stop_for_status authenticate
 #' @importFrom devtools github_pat
 latest_release_with_binary = function(repo,

@@ -13,10 +13,9 @@
 #' @return Invisible NULL
 #' @export
 #'
-#' @examples \dontrun{
+#' @examples
 #' path = example_description_file()
 #' install_remote_binaries(path = path)
-#' }
 #' @importFrom utils install.packages installed.packages
 install_remote_binaries = function(
   path = "DESCRIPTION",
@@ -54,7 +53,10 @@ install_remote_binaries = function(
                        type = .Platform$pkgType)
     }
     if (!drop_all) {
-      packs = packs[ packs %in% installed.packages()]
+      # need to check versions!
+      ip = installed.packages()
+
+      packs = packs[ packs %in% ip]
     }
     if (file.exists(path)) {
       drop_remotes(path = path, drop_remotes = packs)
