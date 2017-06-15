@@ -29,20 +29,26 @@ install_remote_binaries = function(
   }
   if (length(urls) > 0) {
     packs = names(urls)
-    if (verbose) {
-      message(paste0("Installing ", paste(packs, collapse = ","),
-                     " package binaries"))
-    }
     urls = unlist(urls)
-    destfiles = file.path(tempdir(), basename(urls))
-    files = mapply(function(url, destfile){
+    for (ipack in seq_along(urls)) {
+      pack = packs[ipack]
+      url = urls[ipack]
+      if (verbose) {
+        message(paste0("Installing ", pack,
+                       " package binaries"))
+      }
+      # run_url =
+      destfile = file.path(tempdir(), basename(url))
+
+      # files = mapply(function(url, destfile){
       download.file(url, destfile, method = "wget",
-                    quiet = TRUE)
-    }, urls, destfiles)
-    files = NULL
-    install.packages(destfiles,
-                     repos = NULL,
-                     type = .Platform$pkgType)
+                    quiet = !verbose)
+      # }, urls, destfiles)
+      # files = NULL
+      install.packages(destfile,
+                       repos = NULL,
+                       type = .Platform$pkgType)
+    }
     if (!drop_all) {
       packs = packs[ packs %in% installed.packages()]
     }

@@ -26,6 +26,11 @@ drop_remotes = function(
   pack_with_remote = sapply(parsed, function(x) {
     x$repo
   })
+  # in case passing in remotes themselves
+  if (any(grepl("/", drop_remotes))) {
+    drop_remotes = parse_remotes(drop_remotes)
+    drop_remotes = sapply(drop_remotes, `[[`, "repo")
+  }
   if (!is.null(drop_remotes)) {
     remotes = remotes[!(pack_with_remote %in% drop_remotes)]
     remotes = paste(remotes, collapse = ", ")

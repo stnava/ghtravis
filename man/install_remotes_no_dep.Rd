@@ -4,12 +4,15 @@
 \alias{install_remotes_no_dep}
 \title{Returns the specific package from Remotes}
 \usage{
-install_remotes_no_dep(path = "DESCRIPTION", package = NULL, ...)
+install_remotes_no_dep(path = "DESCRIPTION", package = NULL, drop = TRUE,
+  ...)
 }
 \arguments{
 \item{path}{Path to DESCRIPTION file}
 
 \item{package}{Package to subset.  If NULL, then all will be installed}
+
+\item{drop}{Remotes should be dropped after installing}
 
 \item{...}{arguments to pass to install_github}
 }

@@ -3,6 +3,7 @@
 #'
 #' @param path Path to DESCRIPTION file
 #' @param package Package to subset.  If NULL, then all will be installed
+#' @param drop Remotes should be dropped after installing
 #' @param ... arguments to pass to install_github
 #' @return Character vector of remotes
 #'
@@ -16,6 +17,7 @@
 install_remotes_no_dep = function(
   path = "DESCRIPTION",
   package = NULL,
+  drop = TRUE,
   ...) {
   if (!is.null(package)) {
     if (all(package == "")) {
@@ -31,4 +33,7 @@ install_remotes_no_dep = function(
   }
   lapply(remotes, devtools::install_github,
          upgrade_dependencies = FALSE, ...)
+  if (drop) {
+    drop_remotes(drop_remotes = remotes)
+  }
 }
