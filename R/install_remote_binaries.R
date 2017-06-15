@@ -56,7 +56,9 @@ install_remote_binaries = function(
     if (!drop_all) {
       packs = packs[ packs %in% installed.packages()]
     }
-    drop_remotes(path = path, drop_remotes = packs)
+    if (file.exists(path)) {
+      drop_remotes(path = path, drop_remotes = packs)
+    }
   }
   return(NULL)
 }
