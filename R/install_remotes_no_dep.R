@@ -17,6 +17,11 @@ install_remotes_no_dep = function(
   path = "DESCRIPTION",
   package = NULL,
   ...) {
+  if (!is.null(package)) {
+    if (all(package == "")) {
+      package = NULL
+    }
+  }
   remotes = subset_remote(path = path, package = package)
   if (length(remotes) == 0) {
     return(NULL)

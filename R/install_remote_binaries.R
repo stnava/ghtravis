@@ -5,6 +5,7 @@
 #' @param path Path to DESCRIPTION file
 #' @param package Specific package to install
 #' @param drop_all If TRUE, then will only drop packages that are installed
+#' @param verbose Print diagnostic messages
 #'
 #' @return Invisible NULL
 #' @export
@@ -17,14 +18,21 @@
 install_remote_binaries = function(
   path = "DESCRIPTION",
   package = NULL,
-  drop_all = TRUE
+  drop_all = TRUE,
+  verbose = TRUE
 ) {
   urls = remote_binaries(path = path)
   if (!is.null(package)) {
-    urls = urls[intersect(package, names(urls))]
+    if (package != "") {
+      urls = urls[intersect(package, names(urls))]
+    }
   }
   if (length(urls) > 0) {
     packs = names(urls)
+    if (verbose) {
+      message(paste0("Installing ", paste(packs, collapse = ","),
+                     " package binaries"))
+    }
     urls = unlist(urls)
     destfiles = file.path(tempdir(), basename(urls))
     files = mapply(function(url, destfile){
