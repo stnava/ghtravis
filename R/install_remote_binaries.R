@@ -30,7 +30,7 @@ install_remote_binaries = function(
 
   urls = remote_binaries(path = path, remotes = remotes)
   if (!is.null(package)) {
-    if (package != "") {
+    if (all(package != "")) {
       urls = urls[intersect(package, names(urls))]
     }
   }
@@ -76,7 +76,15 @@ install_remote_binaries = function(
       # need to check versions!
       keep_packs = update_these_packages(path = path)
       # utils::remove.packages(keep_packs)
-      packs = packs[ !(packs %in% keep_packs)]
+      keep = (packs %in% keep_packs)
+      if (!all(keep)) {
+        warning(
+          paste0(
+            "Packages: ", paste(packs[keep_packs], collapse = ","),
+                "have installed binary, but version not correct!")
+        )
+      }
+      packs = packs[ !keep ]
     # }
 
     if (file.exists(path)) {
