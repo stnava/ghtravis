@@ -28,8 +28,11 @@ parse_one_remote <- function(x) {
     error = function(e) stop("Unknown remote type: ",
                              type, call. = FALSE)
   )
-
-  fun(repo)
+  args = list(repo)
+  if (tolower(type) == "github") {
+    args$auth_token = devtools::github_pat(quiet = TRUE)
+  }
+  do.call(fun, args = args)
 }
 
 #' @rdname parse_one_remote

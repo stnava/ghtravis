@@ -5,7 +5,7 @@
 \title{Install Binaries from Remotes}
 \usage{
 install_remote_binaries(path = "DESCRIPTION", remotes = NULL,
-  package = NULL, drop_all = TRUE, verbose = TRUE)
+  package = NULL, verbose = TRUE)
 }
 \arguments{
 \item{path}{Path to DESCRIPTION file
@@ -15,8 +15,6 @@ passed to \code{\link{remote_binaries}}}
 passed to \code{\link{remote_binaries}}}
 
 \item{package}{Specific package to install}
-
-\item{drop_all}{If TRUE, then will only drop packages that are installed}
 
 \item{verbose}{Print diagnostic messages}
 }
