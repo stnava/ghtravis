@@ -4,7 +4,7 @@
 [![Travis-CI Build Status](https://travis-ci.org/muschellij2/ghtravis.svg?branch=master)](https://travis-ci.org/muschellij2/ghtravis)
 [![Coverage Status](https://img.shields.io/coveralls/muschellij2/ghtravis.svg)](https://coveralls.io/r/muschellij2/ghtravis?branch=master)
 
-The goal of ghtravis is to Allow for GitHub and Travis R tools
+The goal of `ghtravis` is to provide GitHub and Travis R tools.
 
 ## Installation
 
