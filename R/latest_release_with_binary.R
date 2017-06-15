@@ -2,7 +2,8 @@
 #' @description Parses a remote and gets a binary Get the Latest Binary for a repository
 #'
 #' @param repo Remote repository name
-#'
+#' @param pat GitHub Personal Authentication Token (PAT)
+#' @param ... additional arguments to \code{\link[httr]{GET}}
 #' @return URL of the binary
 #' @export
 #'
@@ -10,8 +11,22 @@
 #' repo = "stnava/ANTsR"
 #' latest_release_with_binary(repo)
 #' }
-#' @importFrom httr GET content stop_for_status
-latest_release_with_binary = function(repo){
+#' @importFrom httr GET content stop_for_status authenticate
+#' @importFrom devtools github_pat
+latest_release_with_binary = function(repo,
+                                      pat = NULL, 
+                                      ...){
+  github_auth <- function(token) {
+    if (is.null(token)) {
+      NULL
+    } else {
+      httr::authenticate(token, "x-oauth-basic", "basic")
+    }
+  }
+  
+  if (is.null(pat)) {
+    pat = devtools::github_pat()
+  }
   info = parse_one_remote(repo)
   user = info$username
   package = info$repo
@@ -21,7 +36,8 @@ latest_release_with_binary = function(repo){
   # Get teh SHAs from the tags
   ###############################
   tag_url = paste0("https://api.github.com/repos/", repo, "/tags")
-  tag_res = httr::GET(tag_url)
+  args = list(url = tag_url)
+  tag_res = httr::GET(tag_url, github_auth(pat), ...)
   httr::stop_for_status(tag_res)
   tag_content = httr::content(tag_res)
   unlist_df = function(x) {
@@ -63,7 +79,7 @@ latest_release_with_binary = function(repo){
 
   url = paste0("https://api.github.com/repos/", repo, "/releases")
 
-  res = httr::GET(url)
+  res = httr::GET(url, github_auth(pat), ...)
   httr::stop_for_status(res)
 
   ##########################
