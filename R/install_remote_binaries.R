@@ -2,7 +2,7 @@
 #' @description Gets Remotes, gets Binaries form GH, and installs them, then
 #' drops them from Remotes field
 #'
-#' @param path Path to DESCRIPTION file,
+#' @param path Path to DESCRIPTION file
 #' passed to \code{\link{remote_binaries}}
 #' @param remotes Remotes to get binaries for - in case not going from DESCRIPTION,
 #' passed to \code{\link{remote_binaries}}
@@ -16,7 +16,7 @@
 #' @examples
 #' path = example_description_file()
 #' install_remote_binaries(path = path)
-#' @importFrom utils install.packages installed.packages
+#' @importFrom utils install.packages installed.packages remove.packages
 install_remote_binaries = function(
   path = "DESCRIPTION",
   remotes = NULL,
@@ -54,9 +54,24 @@ install_remote_binaries = function(
     }
     if (!drop_all) {
       # need to check versions!
-      ip = installed.packages()
+      dd = get_dep_table( path = path,
+                          dependencies = c("Depends", "Imports",
+                            "LinkingTo"),
+                          limit_compare = TRUE)
+      cn = colnames(dd)
+      cn[ cn == "name"] = "Package"
+      cn[ cn == "version"] = "required_version"
+      colnames(dd) = cn
+      ip = installed.packages()[, c("Package", "Version")]
+      dd = merge(dd, ip, all.x = TRUE)
 
-      packs = packs[ packs %in% ip]
+      dd$comp = apply(dd[, c("required_version", "Version")], 1, function(x) {
+        x = make_full_version(x)
+        compareVersion(x[1], x[2])
+      })
+      keep_packs = dd[ dd$comp > 0 , "Package"]
+      utils::remove.packages(keep_packs)
+      packs = packs[ packs %in% ip & !(packs %in% keep_packs)]
     }
     if (file.exists(path)) {
       drop_remotes(path = path, drop_remotes = packs)
