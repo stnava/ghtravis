@@ -23,4 +23,5 @@ Parses a remote and gets a table of tags
 repo = "stnava/ANTsR"
 tag_table(repo)
 tag_table("muschellij2/ANTsR")
+tag_table("cran/psych@084bdd0ae2630cf31c26d97a6e13e59d3f0f66e6")
 }

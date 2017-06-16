@@ -19,12 +19,19 @@ remote_binaries = function(
   remotes = NULL,
   path = "DESCRIPTION",
   package = NULL) {
+
+  verbose = TRUE
   if (is.null(remotes)) {
     remotes = get_remotes(path)
   }
   packs = parse_remotes(remotes)
   packs = sapply(packs, `[[`, "repo")
-  urls = lapply(remotes, latest_release_with_binary)
+  urls = lapply(remotes, function(x) {
+    if (verbose) {
+      print(x)
+    }
+    latest_release_with_binary(x)
+    })
   names(urls) = packs
   no_urls = !sapply(urls, is.na)
   urls = urls[no_urls]
