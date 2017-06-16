@@ -16,14 +16,19 @@ latest_release_with_binary = function(repo,
                                       pat = NULL,
                                       ...){
 
-
+  df = binary_release_table(repo = repo, pat = pat, ...)
+  if (is.null(nrow(df))) {
+    return(NA)
+  }
+  if (is.na(df)) {
+    return(NA)
+  }
   info = parse_one_remote(repo)
   user = info$username
   package = info$repo
   ref = info$ref
   repo = paste0(user, "/", package)
 
-  df = binary_release_table(repo = repo, pat = pat, ...)
 
   ddf = df
   ddf = ddf[ grep(sys_ext(), ddf$asset_name, fixed = TRUE),]
