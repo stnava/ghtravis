@@ -2,9 +2,12 @@
 % Please edit documentation in R/binary_release_table.R
 \name{binary_release_table}
 \alias{binary_release_table}
+\alias{binary_table_no_tags}
 \title{Get Binary Release Table for a repository}
 \usage{
 binary_release_table(repo, pat = NULL, ...)
+
+binary_table_no_tags(repo, pat = NULL, ...)
 }
 \arguments{
 \item{repo}{Remote repository name}
@@ -22,4 +25,8 @@ Parses a remote and gets a table of binary releases
 \examples{
 repo = "stnava/ANTsR"
 binary_release_table(repo)
+binary_release_table("muschellij2/ANTsR")
+repo = "stnava/ANTsR"
+binary_table_no_tags(repo)
+binary_table_no_tags("muschellij2/ANTsR")
 }

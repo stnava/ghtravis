@@ -10,20 +10,15 @@
 #' @examples
 #' repo = "stnava/ANTsR"
 #' binary_release_table(repo)
+#' binary_release_table("muschellij2/ANTsR")
 #' @importFrom httr GET content stop_for_status authenticate
 #' @importFrom devtools github_pat
 binary_release_table = function(
   repo,
   pat = NULL,
   ...){
-  github_auth <- function(token) {
-    if (is.null(token)) {
-      NULL
-    } else {
-      httr::authenticate(token, "x-oauth-basic", "basic")
-    }
-  }
 
+  xrepo = repo
   if (is.null(pat)) {
     pat = devtools::github_pat(quiet = TRUE)
   }
@@ -32,51 +27,64 @@ binary_release_table = function(
   package = info$repo
   # ref = info$ref
   repo = paste0(user, "/", package)
-  ###############################
-  # Get teh SHAs from the tags
-  ###############################
-  tag_url = paste0("https://api.github.com/repos/", repo, "/tags")
-  # args = list(url = tag_url)
-  tag_res = httr::GET(tag_url, github_auth(pat), ...)
-  httr::stop_for_status(tag_res)
-  tag_content = httr::content(tag_res)
-  unlist_df = function(x) {
-    x = unlist(x)
-    x = as.data.frame(t(x), stringsAsFactors = FALSE)
+
+  tag_content = tag_table(repo = xrepo, pat = pat, ...)
+
+  nt = nrow(tag_content)
+  if (is.null(nt)) {
+    return(NA)
   }
-  ensure_colnames = function(x, cn) {
-    sd = setdiff(colnames(x), cn)
-    for (isd in sd) {
-      x[, isd] = NA
-    }
-    sd = setdiff(cn, colnames(x))
-    for (isd in sd) {
-      x[, isd] = NA
-    }
-    return(x)
-  }
-  bind_list = function(L) {
-    L = lapply(L, unlist_df)
-    cn = sapply(L, colnames)
-    cn = unique(c(unlist(cn)))
-    L = lapply(L, function(x){
-      x = ensure_colnames(x, cn)
-      x[, cn]
-    })
-    L = do.call("rbind", L)
-    return(L)
+  if (nt == 0) {
+    return(NA)
   }
 
-
-  tag_content = bind_list(tag_content)
-  if (!is.null(tag_content)) {
-    if (ncol(tag_content) > 0) {
-      cn = colnames(tag_content)
-      cn[ cn == "name"] = "tag_name"
-      colnames(tag_content) = cn
-    }
+  df = binary_table_no_tags(repo = xrepo, pat = pat, ...)
+  if (is.na(df)) {
+    return(NA)
   }
 
+  cn = c("asset_updated_at", "asset_created_at",
+         "tag_name", "created_at", "published_at",
+         "asset_name", "asset_label", "asset_download_count",
+         "asset_browser_download_url")
+  df = df[, cn]
+
+  df = merge(tag_content, df, by = "tag_name", all.x = TRUE)
+
+  make_time = function(times) {
+    strptime(times, format = "%Y-%m-%dT%H:%M:%SZ")
+  }
+  df$created_at = make_time(df$created_at)
+  df$published_at = make_time(df$published_at)
+  df$asset_updated_at = make_time(df$asset_updated_at)
+  df$asset_created_at = make_time(df$asset_created_at)
+
+  ord = order(df$asset_created_at, df$asset_updated_at, decreasing = TRUE)
+  df = df[ord, ]
+
+  return(df)
+}
+
+#' @rdname binary_release_table
+#' @export
+#' @examples
+#' repo = "stnava/ANTsR"
+#' binary_table_no_tags(repo)
+#' binary_table_no_tags("muschellij2/ANTsR")
+binary_table_no_tags = function(
+  repo,
+  pat = NULL,
+  ...){
+
+  info = parse_one_remote(repo)
+  user = info$username
+  package = info$repo
+  # ref = info$ref
+  repo = paste0(user, "/", package)
+
+  if (is.null(pat)) {
+    pat = devtools::github_pat(quiet = TRUE)
+  }
   url = paste0("https://api.github.com/repos/", repo, "/releases")
 
   res = httr::GET(url, github_auth(pat), ...)
@@ -119,24 +127,5 @@ binary_release_table = function(
   if (nrow(df) == 0) {
     return(NA)
   }
-  cn = c("asset_updated_at", "asset_created_at",
-         "tag_name", "created_at", "published_at",
-         "asset_name", "asset_label", "asset_download_count",
-         "asset_browser_download_url")
-  df = df[, cn]
-
-  df = merge(tag_content, df, by = "tag_name", all.x = TRUE)
-
-  make_time = function(times) {
-    strptime(times, format = "%Y-%m-%dT%H:%M:%SZ")
-  }
-  df$created_at = make_time(df$created_at)
-  df$published_at = make_time(df$published_at)
-  df$asset_updated_at = make_time(df$asset_updated_at)
-  df$asset_created_at = make_time(df$asset_created_at)
-
-  ord = order(df$asset_created_at, df$asset_updated_at, decreasing = TRUE)
-  df = df[ord, ]
-
   return(df)
 }

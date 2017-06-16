@@ -20,8 +20,10 @@ latest_release_with_binary = function(repo,
   if (is.null(nrow(df))) {
     return(NA)
   }
-  if (is.na(df)) {
-    return(NA)
+  if (is.vector(df)) {
+    if (is.na(df)) {
+      return(NA)
+    }
   }
   info = parse_one_remote(repo)
   user = info$username
