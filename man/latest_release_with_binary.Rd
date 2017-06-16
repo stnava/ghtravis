@@ -17,7 +17,7 @@ latest_release_with_binary(repo, pat = NULL, ...)
 URL of the binary
 }
 \description{
-Parses a remote and gets a binary Get the Latest Binary for a repository
+Parses a remote and gets a URL for a binary release
 }
 \examples{
 repo = "stnava/ANTsR"
