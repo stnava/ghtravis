@@ -39,7 +39,7 @@ binary_release_table = function(
   }
 
   df = binary_table_no_tags(repo = xrepo, pat = pat, ...)
-  if (is.na(df)) {
+  if (all(is.na(df))) {
     return(NA)
   }
 

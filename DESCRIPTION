@@ -1,7 +1,7 @@
 Package: ghtravis
 Type: Package
 Title: Interfaces with GitHub API and Travis
-Version: 0.3.4.1
+Version: 0.3.5.1
 Author: John Muschelli
 Maintainer: John Muschelli <muschellij2@gmail.com>
 Description: Interfaces and compares things on 'GitHub'

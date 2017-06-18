@@ -21,7 +21,7 @@ latest_release_with_binary = function(repo,
     return(NA)
   }
   if (is.vector(df)) {
-    if (is.na(df)) {
+    if (all(is.na(df))) {
       return(NA)
     }
   }
