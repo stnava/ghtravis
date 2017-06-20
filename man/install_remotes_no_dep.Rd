@@ -4,13 +4,15 @@
 \alias{install_remotes_no_dep}
 \title{Returns the specific package from Remotes}
 \usage{
-install_remotes_no_dep(path = "DESCRIPTION", package = NULL, drop = TRUE,
-  ...)
+install_remotes_no_dep(path = "DESCRIPTION", package = NULL,
+  reorder = TRUE, drop = TRUE, ...)
 }
 \arguments{
 \item{path}{Path to DESCRIPTION file}
 
 \item{package}{Package to subset.  If NULL, then all will be installed}
+
+\item{reorder}{should remotes be reordered before running}
 
 \item{drop}{Remotes should be dropped after installing}
 

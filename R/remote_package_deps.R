@@ -25,11 +25,13 @@ all_remote_package_deps = function(
                     "LinkingTo", "Suggests"),
   exclude_remotes = TRUE) {
   repo = get_remotes(path = path)
-  res = remote_package_deps(repo = repo,
+  L = remote_package_deps(repo = repo,
                             dependencies = dependencies,
                             ...)
-  packs = res$packages
-  deps = res$dependencies
+  packs = names(L)
+  deps = do.call("rbind", L)
+  rownames(deps) = NULL
+  deps = unique(deps)
   if (exclude_remotes) {
     deps = deps[ !(deps$name %in% packs), , drop = FALSE]
   }
@@ -45,7 +47,7 @@ remote_package_deps = function(
                     "LinkingTo", "Suggests")) {
   tmp_dcf = get_remote_package_dcf(...)
   L = vector(mode = "list", length = length(tmp_dcf))
-  packs = rep(NA, length = length(tmp_dcf))
+  # packs = rep(NA, length = length(tmp_dcf))
   for (iL in seq_along(tmp_dcf)) {
     tmp = tmp_dcf[[iL]]
     if (is.na(tmp)) {
@@ -54,12 +56,11 @@ remote_package_deps = function(
     } else {
       L[[iL]] = get_dep_table(path = tmp,
                               dependencies = dependencies)
-      packs[iL] = read_dcf(tmp)$dcf$Package
+      names(L)[iL] = read_dcf(tmp)$dcf$Package
+      # packs[iL] = read_dcf(tmp)$dcf$Package
     }
   }
-  L = do.call("rbind", L)
-  L = unique(L)
-  L = list(dependencies = L, packages = packs)
+  # names(L) = packs
   return(L)
 }
 

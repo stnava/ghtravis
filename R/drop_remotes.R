@@ -4,17 +4,22 @@
 #'
 #' @param path Path to DESCRIPTION file
 #' @param drop_remotes Packages for Remotes to Drop
+#' @param reorder Should remotes be reordered after running
+#' @param ... if \code{reorder = TRUE} then arguments passed to
+#' \code{\link{reorder_remotes}}
 #'
 #' @return Rewrites the DESCRIPTION file without remotes
 #' @export
 #'
 #' @examples
 #' path = example_description_file()
-#' x = drop_remotes(path)
+#' x = drop_remotes(path, reorder = TRUE)
 #' readLines(x)
 drop_remotes = function(
   path = "DESCRIPTION",
-  drop_remotes = NULL) {
+  drop_remotes = NULL,
+  reorder = FALSE,
+  ...) {
 
   # remotes = get_remotes(path )
   rres = read_dcf(path)
@@ -46,15 +51,14 @@ drop_remotes = function(
   } else {
     remotes = NULL
   }
-  res$Remotes = remotes
-  nres = names(res)
-  res = as.data.frame(res,
-                      stringsAsFactors = FALSE)
-  names(res) = nres
 
-  write.dcf(x = res,
-            file = path)
-  return(path)
+  res = rewrite_remotes(
+    path = path,
+    remotes = remotes)
+  if (reorder) {
+    res = reorder_remotes(path = path, ...)
+  }
+  return(res)
 }
 
 
