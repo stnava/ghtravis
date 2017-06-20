@@ -94,6 +94,8 @@ install_missing_remote_deps = function(
   packs = missing_remote_deps(path = path, ...)
   if (length(packs) > 0) {
     install.packages(packs)
+    return(all(packs %in% installed.packages()))
+  } else {
+    return(TRUE)
   }
-  return(all(packs %in% installed.packages()))
 }
