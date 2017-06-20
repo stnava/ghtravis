@@ -21,7 +21,8 @@ install_remotes_no_dep(path = "DESCRIPTION", package = NULL,
 \value{
 Character vector of remotes
 
-Output of \code{install_github}
+Output of \code{\link{install_github}}, indicator
+of TRUE/FALSE for installation
 }
 \description{
 Subsets the remotes based on a package
