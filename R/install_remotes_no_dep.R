@@ -31,11 +31,12 @@ install_remotes_no_dep = function(
   if (all(remotes == "")) {
     return(NULL)
   }
-  remotes = remotes[ !remotes %in% "" ]
+  if (drop) {
+    drop_remotes(path = path, drop_remotes = remotes)
+  }
+  remotes = remotes[ !(remotes %in% "") ]
   lapply(remotes, devtools::install_github,
          auth_token = github_pat(quiet = TRUE),
          upgrade_dependencies = FALSE, ...)
-  if (drop) {
-    drop_remotes(drop_remotes = remotes)
-  }
+
 }
