@@ -25,6 +25,8 @@ install_missing_remote_deps(path = "DESCRIPTION", ...)
 
 \item{dependencies}{List of dependencies to parse, passed to
 \code{\link{get_dep_table}}}
+
+\item{exclude_remotes}{exclude Remotes in dependency table}
 }
 \value{
 A \code{data.frame} of Dependencies

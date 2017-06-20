@@ -3,6 +3,7 @@
 #' @param path Path to DESCRIPTION file
 #' @param dependencies List of dependencies to parse, passed to
 #' \code{\link{get_dep_table}}
+#' @param exclude_remotes exclude Remotes in dependency table
 #' @param ... arguments passed to \code{\link{get_remote_package_dcf}}
 #'
 #' @return A \code{data.frame} of Dependencies
