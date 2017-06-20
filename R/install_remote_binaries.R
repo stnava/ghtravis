@@ -92,6 +92,10 @@ install_remote_binaries = function(
       if (file.exists(path)) {
         drop_remotes(path = path, drop_remotes = packs)
       }
+    } else {
+      if (file.exists(path)) {
+        drop_remotes(path = path, drop_remotes = remotes)
+      }
     }
   }
   return(NULL)
