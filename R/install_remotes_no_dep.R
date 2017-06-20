@@ -28,6 +28,7 @@ install_remotes_no_dep = function(
     }
   }
   if (reorder) {
+    message("Reordering Remotes")
     reorder_remotes(path = path)
   }
   remotes = subset_remote(path = path, package = package)
@@ -38,7 +39,7 @@ install_remotes_no_dep = function(
     return(NULL)
   }
   if (drop) {
-    drop_remotes(path = path, drop_remotes = remotes)
+    drop_remotes(path = path, drop_remotes = remotes, reorder = reorder)
   }
   remotes = remotes[ !(remotes %in% "") ]
   res = sapply(remotes, devtools::install_github,
