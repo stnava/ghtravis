@@ -42,12 +42,7 @@ drop_remotes = function(
   if (!is.null(drop_remotes)) {
     remotes = remotes[!(pack_with_remote %in% drop_remotes)]
     remotes = paste(remotes, collapse = ", ")
-    if (length(remotes) == 0 ) {
-      remotes = NULL
-    }
-    if (all(remotes == "")) {
-      remotes = NULL
-    }
+    remotes = null_if_empty(remotes)
   } else {
     remotes = NULL
   }

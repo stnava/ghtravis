@@ -5,12 +5,12 @@
 \alias{remote_package_dcf}
 \title{Read Remote Package DESCRIPTION file}
 \usage{
-get_remote_package_dcf(repo, pat = NULL, url = "https://github.com", ...)
+get_remote_package_dcf(remotes, pat = NULL, url = "https://github.com", ...)
 
 remote_package_dcf(...)
 }
 \arguments{
-\item{repo}{Repository name}
+\item{remotes}{Repository name}
 
 \item{pat}{GitHub Personal Authentication Token (PAT)}
 

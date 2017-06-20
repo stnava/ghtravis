@@ -7,7 +7,7 @@
 \alias{install_missing_remote_deps}
 \title{Get Remote Package Dependencies}
 \usage{
-all_remote_package_deps(path = "DESCRIPTION", ...,
+all_remote_package_deps(path = "DESCRIPTION", remotes = NULL, ...,
   dependencies = c("Depends", "Imports", "LinkingTo", "Suggests"),
   exclude_remotes = TRUE)
 
@@ -20,6 +20,8 @@ install_missing_remote_deps(path = "DESCRIPTION", ...)
 }
 \arguments{
 \item{path}{Path to DESCRIPTION file}
+
+\item{remotes}{Repository if one specific}
 
 \item{...}{arguments passed to \code{\link{get_remote_package_dcf}}}
 

@@ -1,3 +1,15 @@
+null_if_empty = function(x) {
+  if (length(x) == 0 ) {
+    x = NULL
+  }
+  if (!is.null(x)) {
+    if (all(x == "")) {
+      x = NULL
+    }
+  }
+  return(x)
+}
+
 github_auth <- function(token) {
   if (is.null(token)) {
     NULL

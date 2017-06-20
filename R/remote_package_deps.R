@@ -1,6 +1,7 @@
 #' Get Remote Package Dependencies
 #'
 #' @param path Path to DESCRIPTION file
+#' @param remotes Repository if one specific
 #' @param dependencies List of dependencies to parse, passed to
 #' \code{\link{get_dep_table}}
 #' @param exclude_remotes exclude Remotes in dependency table
@@ -20,14 +21,22 @@
 #' @export
 all_remote_package_deps = function(
   path = "DESCRIPTION",
+  remotes = NULL,
   ...,
   dependencies =  c("Depends", "Imports",
                     "LinkingTo", "Suggests"),
   exclude_remotes = TRUE) {
-  repo = get_remotes(path = path)
-  L = remote_package_deps(repo = repo,
-                            dependencies = dependencies,
-                            ...)
+  remotes = null_if_empty(remotes)
+
+  if (is.null(remotes)) {
+    remotes = get_remotes(path = path)
+  } else {
+    message("Repositories are given, overriding path")
+  }
+  L = remote_package_deps(
+    remotes = remotes,
+    dependencies = dependencies,
+    ...)
   packs = names(L)
   deps = do.call("rbind", L)
   rownames(deps) = NULL

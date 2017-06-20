@@ -18,20 +18,20 @@ remote_order = function(
   ...,
   max_iter = 200){
 
-  repo = get_remotes(path = path)
-  if (length(repo) == 0) {
+  remotes = get_remotes(path = path)
+  if (length(remotes) == 0) {
     return(NULL)
   }
-  parsed = parse_remotes(repo)
+  parsed = parse_remotes(remotes)
   all_packs = sapply(parsed, `[[`, "repo")
 
   L = remote_package_deps(
-    repo = repo,
+    remotes = remotes,
     dependencies =  c("Depends", "Imports"),
     ...)
   packs = names(L)
   stopifnot(all(all_packs %in% packs))
-  names(repo) = packs
+  names(remotes) = packs
   dep_mat = sapply(L, function(x) {
     packs %in% x$name
     })
@@ -39,7 +39,7 @@ remote_order = function(
 
   install_order = list()
   i = 1
-  while(length(packs) > 0) {
+  while (length(packs) > 0) {
     graph = igraph::graph_from_adjacency_matrix(
       dep_mat,
       mode = "directed")
@@ -59,7 +59,7 @@ remote_order = function(
     }
   }
   install_order = unlist(install_order)
-  remotes = repo[ install_order]
+  remotes = remotes[ install_order]
   return(remotes)
 }
 
