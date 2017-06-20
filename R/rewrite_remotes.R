@@ -9,6 +9,14 @@
 rewrite_remotes = function(path, remotes = NULL) {
   rres = read_dcf(path = path)
   res = rres$dcf
+  if (!is.null(remotes)) {
+    if (!all(remotes == "")) {
+      remotes = remotes[ remotes != "" ]
+      remotes = paste(remotes, collapse = ", ")
+    } else {
+      remotes = NULL
+    }
+  }
   res$Remotes = remotes
   nres = names(res)
   res = as.data.frame(res,
