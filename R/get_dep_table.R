@@ -31,7 +31,8 @@ get_dep_table = function(
   }
   rownames(deps) = NULL
   if (limit_compare) {
-    deps = deps[ !is.na(deps$compare), ]
+    deps = deps[ !is.na(deps$compare), , drop = FALSE]
   }
+  deps = unique(deps)
   return(deps)
 }
