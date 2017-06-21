@@ -5,6 +5,7 @@
 #' @param path Path to DESCRIPTION file
 #' @param drop_remotes Packages for Remotes to Drop
 #' @param reorder Should remotes be reordered after running
+#' @param verbose Print diagnostic message
 #' @param ... if \code{reorder = TRUE} then arguments passed to
 #' \code{\link{reorder_remotes}}
 #'
@@ -19,6 +20,7 @@ drop_remotes = function(
   path = "DESCRIPTION",
   drop_remotes = NULL,
   reorder = FALSE,
+  verbose = TRUE,
   ...) {
 
   # remotes = get_remotes(path )
@@ -46,12 +48,16 @@ drop_remotes = function(
   } else {
     remotes = NULL
   }
-
+  if (verbose) {
+    message(paste0("Rewriting new remotes: ", remotes))
+  }
   res = rewrite_remotes(
     path = path,
     remotes = remotes)
   if (reorder) {
-    res = reorder_remotes(path = path, ...)
+    if (!is.null(remotes)) {
+      res = reorder_remotes(path = path, ...)
+    }
   }
   return(res)
 }

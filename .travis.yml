@@ -7,10 +7,7 @@ os:
 
 after_success:
   - Rscript -e 'covr::coveralls()'
-  - packname=`Rscript -e 'cat(read.dcf("DESCRIPTION")[, "Package"])'`
-  - cd ../
-  - travis_wait 100 R CMD INSTALL --build ${packname}
-
+  - install_build_with_tag  
 
 deploy:
   provider: releases

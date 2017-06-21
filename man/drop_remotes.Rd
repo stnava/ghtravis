@@ -5,7 +5,7 @@
 \title{Drop Remotes from DESCRIPTION}
 \usage{
 drop_remotes(path = "DESCRIPTION", drop_remotes = NULL, reorder = FALSE,
-  ...)
+  verbose = TRUE, ...)
 }
 \arguments{
 \item{path}{Path to DESCRIPTION file}
@@ -13,6 +13,8 @@ drop_remotes(path = "DESCRIPTION", drop_remotes = NULL, reorder = FALSE,
 \item{drop_remotes}{Packages for Remotes to Drop}
 
 \item{reorder}{Should remotes be reordered after running}
+
+\item{verbose}{Print diagnostic message}
 
 \item{...}{if \code{reorder = TRUE} then arguments passed to
 \code{\link{reorder_remotes}}}

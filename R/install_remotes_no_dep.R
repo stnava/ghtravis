@@ -5,6 +5,7 @@
 #' @param package Package to subset.  If NULL, then all will be installed
 #' @param reorder should remotes be reordered before running
 #' @param drop Remotes should be dropped after installing
+#' @param verbose Print diagnostic message
 #' @param ... arguments to pass to install_github
 #' @return Character vector of remotes
 #'
@@ -21,6 +22,7 @@ install_remotes_no_dep = function(
   package = NULL,
   reorder = TRUE,
   drop = TRUE,
+  verbose = TRUE,
   ...) {
   if (!is.null(package)) {
     if (all(package == "")) {
@@ -39,7 +41,12 @@ install_remotes_no_dep = function(
     return(NULL)
   }
   if (drop) {
-    drop_remotes(path = path, drop_remotes = remotes, reorder = reorder)
+    if (verbose) {
+      message("Dropping Remotes")
+    }
+    drop_remotes(path = path, drop_remotes = remotes,
+                 reorder = reorder,
+                 verbose = verbose)
   }
   remotes = remotes[ !(remotes %in% "") ]
   res = sapply(remotes, devtools::install_github,

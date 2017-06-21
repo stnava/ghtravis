@@ -5,7 +5,7 @@
 \title{Returns the specific package from Remotes}
 \usage{
 install_remotes_no_dep(path = "DESCRIPTION", package = NULL,
-  reorder = TRUE, drop = TRUE, ...)
+  reorder = TRUE, drop = TRUE, verbose = TRUE, ...)
 }
 \arguments{
 \item{path}{Path to DESCRIPTION file}
@@ -15,6 +15,8 @@ install_remotes_no_dep(path = "DESCRIPTION", package = NULL,
 \item{reorder}{should remotes be reordered before running}
 
 \item{drop}{Remotes should be dropped after installing}
+
+\item{verbose}{Print diagnostic message}
 
 \item{...}{arguments to pass to install_github}
 }
