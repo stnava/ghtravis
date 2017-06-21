@@ -5,7 +5,12 @@ os:
   - linux
   - osx
 
-after_success: Rscript -e 'covr::coveralls()'
+after_success:
+  - packname=`Rscript -e 'cat(read.dcf("DESCRIPTION")[, "Package"])'`
+  - cd ../
+  - travis_wait 100 R CMD INSTALL --build ${packname}
+  - cd ${packname}
+  - Rscript -e 'covr::coveralls()'
 
 deploy:
   provider: releases
