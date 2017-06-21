@@ -2,6 +2,7 @@
 #' Order of the Remotes for Installation
 #'
 #' @param path Path to DESCRIPTION file
+#' @param verbose Print diagnostic message
 #' @param ... arguments passed to \code{\link{remote_package_deps}}
 #' @param max_iter Number of iterations - shouldn't have to change,
 #' stops from infinite loop
@@ -69,8 +70,12 @@ remote_order = function(
 #' @rdname remote_order
 reorder_remotes = function(
   path = "DESCRIPTION",
+  verbose = TRUE,
   ...){
   remotes = remote_order(path = path, ...)
+  if (verbose) {
+    message(paste0("Remote order: ", paste(remotes, collapse = ", ")))
+  }
   res = rewrite_remotes(path = path, remotes = remotes)
   return(res)
 }

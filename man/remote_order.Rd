@@ -7,7 +7,7 @@
 \usage{
 remote_order(path = "DESCRIPTION", ..., max_iter = 200)
 
-reorder_remotes(path = "DESCRIPTION", ...)
+reorder_remotes(path = "DESCRIPTION", verbose = TRUE, ...)
 }
 \arguments{
 \item{path}{Path to DESCRIPTION file}
@@ -16,6 +16,8 @@ reorder_remotes(path = "DESCRIPTION", ...)
 
 \item{max_iter}{Number of iterations - shouldn't have to change,
 stops from infinite loop}
+
+\item{verbose}{Print diagnostic message}
 }
 \value{
 Order of remotes
