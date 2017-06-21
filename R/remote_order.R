@@ -8,7 +8,6 @@
 #'
 #' @return Order of remotes
 #' @export
-#' @importFrom igraph graph_from_adjacency_matrix degree
 #' @examples
 #' path = example_description_file()
 #' x = remote_order(path = path)
@@ -17,6 +16,7 @@ remote_order = function(
   path = "DESCRIPTION",
   ...,
   max_iter = 200){
+  # @importFrom igraph graph_from_adjacency_matrix degree
 
   remotes = get_remotes(path = path)
   if (length(remotes) == 0) {
@@ -40,12 +40,14 @@ remote_order = function(
   install_order = list()
   i = 1
   while (length(packs) > 0) {
-    graph = igraph::graph_from_adjacency_matrix(
-      dep_mat,
-      mode = "directed")
+    # graph = igraph::graph_from_adjacency_matrix(
+    #   dep_mat,
+    #   mode = "directed")
+    cs = colSums(dep_mat) == 0
+    installer = names(cs)[cs]
 
-    outs = igraph::degree(graph, mode = "in")
-    installer = names(outs)[outs == 0]
+    # outs = igraph::degree(graph, mode = "in")
+    # installer = names(outs)[outs == 0]
     install_order = c(install_order,
                       list(installer))
     # no_dep = names(deg)[deg == 0]
