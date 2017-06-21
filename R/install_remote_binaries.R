@@ -28,7 +28,7 @@ install_remote_binaries = function(
   verbose = TRUE
 ) {
 
-  urls = remote_binaries(path = path, remotes = remotes)
+  urls = remote_binaries(path = path, remotes = remotes, verbose = verbose)
   if (!is.null(package)) {
     if (all(package != "")) {
       urls = urls[intersect(package, names(urls))]

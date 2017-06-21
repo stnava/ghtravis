@@ -3,6 +3,7 @@
 #'
 #' @param repo Remote repository name
 #' @param pat GitHub Personal Authentication Token (PAT)
+#' @param verbose print diagnostic messages
 #' @param ... additional arguments to \code{\link[httr]{GET}}
 #' @return URL of the binary
 #' @export
@@ -14,6 +15,7 @@
 #' @importFrom devtools github_pat
 latest_release_with_binary = function(repo,
                                       pat = NULL,
+                                      verbose = TRUE,
                                       ...){
 
   df = binary_release_table(repo = repo, pat = pat, ...)
@@ -45,6 +47,10 @@ latest_release_with_binary = function(repo,
   }
   ord = order(ddf$asset_created_at, ddf$asset_updated_at, decreasing = TRUE)
   ddf = ddf[ord, ]
+  if (verbose) {
+    message("Table is")
+    print(ddf)
+  }
   if (nrow(ddf) > 0) {
     ddf = ddf[1,]
     url = ddf$asset_browser_download_url

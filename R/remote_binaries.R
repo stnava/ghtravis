@@ -4,6 +4,7 @@
 #' @param remotes Remotes to get the binaries for
 #' @param path Path to DESCRIPTION field
 #' @param package packages to subset if necessary
+#' @param verbose print diagnostic messages
 #'
 #' @return List of remote binaries
 #' @export
@@ -18,9 +19,10 @@
 remote_binaries = function(
   remotes = NULL,
   path = "DESCRIPTION",
-  package = NULL) {
-
+  package = NULL,
   verbose = TRUE
+) {
+
   if (is.null(remotes)) {
     remotes = get_remotes(path)
   }
@@ -30,7 +32,7 @@ remote_binaries = function(
     if (verbose) {
       print(x)
     }
-    latest_release_with_binary(x)
+    latest_release_with_binary(x, verbose = verbose)
     })
   names(urls) = packs
   no_urls = !sapply(urls, is.na)

@@ -4,7 +4,8 @@
 \alias{remote_binaries}
 \title{Get Binaries from Remotes}
 \usage{
-remote_binaries(remotes = NULL, path = "DESCRIPTION", package = NULL)
+remote_binaries(remotes = NULL, path = "DESCRIPTION", package = NULL,
+  verbose = TRUE)
 }
 \arguments{
 \item{remotes}{Remotes to get the binaries for}
@@ -12,6 +13,8 @@ remote_binaries(remotes = NULL, path = "DESCRIPTION", package = NULL)
 \item{path}{Path to DESCRIPTION field}
 
 \item{package}{packages to subset if necessary}
+
+\item{verbose}{print diagnostic messages}
 }
 \value{
 List of remote binaries

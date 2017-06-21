@@ -4,12 +4,14 @@
 \alias{latest_release_with_binary}
 \title{Get the Latest Binary for a repository}
 \usage{
-latest_release_with_binary(repo, pat = NULL, ...)
+latest_release_with_binary(repo, pat = NULL, verbose = TRUE, ...)
 }
 \arguments{
 \item{repo}{Remote repository name}
 
 \item{pat}{GitHub Personal Authentication Token (PAT)}
+
+\item{verbose}{print diagnostic messages}
 
 \item{...}{additional arguments to \code{\link[httr]{GET}}}
 }
