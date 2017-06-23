@@ -12,7 +12,7 @@
 #' tag_table(repo)
 #' tag_table("muschellij2/ANTsR")
 #' tag_table("cran/psych@084bdd0ae2630cf31c26d97a6e13e59d3f0f66e6")
-#' @importFrom httr GET content stop_for_status authenticate
+#' @importFrom httr GET content stop_for_status authenticate message_for_status
 #' @importFrom devtools github_pat
 tag_table = function(repo, pat = NULL, ...) {
   if (is.null(pat)) {
@@ -28,6 +28,7 @@ tag_table = function(repo, pat = NULL, ...) {
   # args = list(url = tag_url)
   tag_res = httr::GET(tag_url, github_auth(pat), ...)
   httr::stop_for_status(tag_res)
+  httr::message_for_status(tag_res)
   tag_content = httr::content(tag_res)
 
 

@@ -38,7 +38,7 @@ binary_release_table = function(
     cn = c("tag_name", "zipball_url", "tarball_url", "commit.sha", "commit.url")
     tag_content = t(rep(NA, length = length(cn)))
     colnames(tag_content) = cn
-    tag_content = as.data.frame(tag_content, stringsAsFactors = FALSE)    
+    tag_content = as.data.frame(tag_content, stringsAsFactors = FALSE)
     # return(NA) # there should be no releases, but there may be somehow?
   }
 
@@ -55,7 +55,7 @@ binary_release_table = function(
 
   # df = merge(tag_content, df, by = "tag_name", all.x = TRUE)
   df = merge(tag_content, df, by = "tag_name", all = TRUE)
-  
+
   make_time = function(times) {
     strptime(times, format = "%Y-%m-%dT%H:%M:%SZ")
   }
@@ -94,6 +94,7 @@ binary_table_no_tags = function(
 
   res = httr::GET(url, github_auth(pat), ...)
   httr::stop_for_status(res)
+  httr::message_for_status(res)
 
   ##########################
   # all releases
