@@ -7,14 +7,14 @@
 \alias{install_missing_remote_deps}
 \title{Get Remote Package Dependencies}
 \usage{
-all_remote_package_deps(path = "DESCRIPTION", remotes = NULL, ...,
-  dependencies = c("Depends", "Imports", "LinkingTo", "Suggests"),
-  exclude_remotes = TRUE)
+all_remote_package_deps(path = "DESCRIPTION", remotes = NULL,
+  verbose = TRUE, ..., dependencies = c("Depends", "Imports", "LinkingTo",
+  "Suggests"), exclude_remotes = TRUE)
 
 remote_package_deps(..., dependencies = c("Depends", "Imports", "LinkingTo",
   "Suggests"))
 
-missing_remote_deps(path = "DESCRIPTION", ...)
+missing_remote_deps(path = "DESCRIPTION", verbose = TRUE, ...)
 
 install_missing_remote_deps(path = "DESCRIPTION", ...)
 }
@@ -22,6 +22,8 @@ install_missing_remote_deps(path = "DESCRIPTION", ...)
 \item{path}{Path to DESCRIPTION file}
 
 \item{remotes}{Repository if one specific}
+
+\item{verbose}{Print diagnostic message}
 
 \item{...}{arguments passed to \code{\link{get_remote_package_dcf}}}
 
@@ -43,5 +45,6 @@ Get Remote Package Dependencies
 remote_package_deps("stnava/ANTsRCore")
 path = example_description_file()
 all_remote_package_deps(path = path)
+all_remote_package_deps(remotes = c("stnava/ANTsRCore", "stnava/ITKR"))
 missing_remote_deps(path = path)
 }

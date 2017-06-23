@@ -5,6 +5,7 @@
 #' @param dependencies List of dependencies to parse, passed to
 #' \code{\link{get_dep_table}}
 #' @param exclude_remotes exclude Remotes in dependency table
+#' @param verbose Print diagnostic message
 #' @param ... arguments passed to \code{\link{get_remote_package_dcf}}
 #'
 #' @return A \code{data.frame} of Dependencies
@@ -17,11 +18,13 @@
 #' remote_package_deps("stnava/ANTsRCore")
 #' path = example_description_file()
 #' all_remote_package_deps(path = path)
+#' all_remote_package_deps(remotes = c("stnava/ANTsRCore", "stnava/ITKR"))
 #' missing_remote_deps(path = path)
 #' @export
 all_remote_package_deps = function(
   path = "DESCRIPTION",
   remotes = NULL,
+  verbose = TRUE,
   ...,
   dependencies =  c("Depends", "Imports",
                     "LinkingTo", "Suggests"),
@@ -31,7 +34,9 @@ all_remote_package_deps = function(
   if (is.null(remotes)) {
     remotes = get_remotes(path = path)
   } else {
-    message("Repositories are given, overriding path")
+    if (verbose) {
+      message("Repositories are given, overriding path")
+    }
   }
   L = remote_package_deps(
     remotes = remotes,
@@ -77,11 +82,21 @@ remote_package_deps = function(
 #' @export
 missing_remote_deps = function(
   path = "DESCRIPTION",
+  verbose = TRUE,
   ...) {
   res = all_remote_package_deps(
     path = path,
+    verbose = verbose,
     ...)
-  res = res$name[ !(res$name %in% installed.packages()) ]
+  res$installed = res$name %in% installed.packages()
+  if (verbose) {
+    print(res[, c("name", "installed")])
+    message("All installed dependencies are ",
+            paste(res$name[res$installed], collapse = ","))
+    message("All missing dependencies are ",
+            paste(res$name[!res$installed], collapse = ","))
+  }
+  res = res$name[ !res$installed ]
   return(res)
 }
 
