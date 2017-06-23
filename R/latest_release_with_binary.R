@@ -36,7 +36,7 @@ latest_release_with_binary = function(repo,
 
   ddf = df
   ddf = ddf[ grep(sys_ext(), ddf$asset_name, fixed = TRUE),]
-  if (!(ref %in% "master")) {
+  if (!(ref %in% c("master", ""))) {
     if (!(ref %in% ddf$commit.sha)) {
       warning(paste0("SHA was given, but no release associated",
                      " with it!, not installing, returning NA"))
