@@ -5,7 +5,7 @@
 \alias{binary_table_no_tags}
 \title{Get Binary Release Table for a repository}
 \usage{
-binary_release_table(repo, pat = NULL, ...)
+binary_release_table(repo, pat = NULL, verbose = TRUE, ...)
 
 binary_table_no_tags(repo, pat = NULL, ...)
 }
@@ -13,6 +13,8 @@ binary_table_no_tags(repo, pat = NULL, ...)
 \item{repo}{Remote repository name}
 
 \item{pat}{GitHub Personal Authentication Token (PAT)}
+
+\item{verbose}{print diagnostic messages}
 
 \item{...}{additional arguments to \code{\link[httr]{GET}}}
 }

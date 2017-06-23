@@ -3,6 +3,8 @@
 #'
 #' @param repo Remote repository name
 #' @param pat GitHub Personal Authentication Token (PAT)
+#' @param verbose print diagnostic messages
+#'
 #' @param ... additional arguments to \code{\link[httr]{GET}}
 #' @return \code{data.frame} of binary releases
 #' @export
@@ -16,6 +18,7 @@
 binary_release_table = function(
   repo,
   pat = NULL,
+  verbose = TRUE,
   ...){
 
   xrepo = repo
@@ -41,8 +44,16 @@ binary_release_table = function(
     tag_content = as.data.frame(tag_content, stringsAsFactors = FALSE)
     # return(NA) # there should be no releases, but there may be somehow?
   }
+  if (verbose) {
+    message("tag_content is ")
+    print(tag_content)
+  }
 
   df = binary_table_no_tags(repo = xrepo, pat = pat, ...)
+  if (verbose) {
+    message("binary_table_no_tags is ")
+    print(df)
+  }
   if (all(is.na(df))) {
     return(NA)
   }
@@ -55,7 +66,10 @@ binary_release_table = function(
 
   # df = merge(tag_content, df, by = "tag_name", all.x = TRUE)
   df = merge(tag_content, df, by = "tag_name", all = TRUE)
-
+  if (verbose) {
+    message("merged data is is ")
+    print(df)
+  }
   make_time = function(times) {
     strptime(times, format = "%Y-%m-%dT%H:%M:%SZ")
   }
@@ -67,6 +81,10 @@ binary_release_table = function(
   ord = order(df$asset_created_at, df$asset_updated_at, decreasing = TRUE)
   df = df[ord, ]
 
+  if (verbose) {
+    message("sorted data is is ")
+    print(df)
+  }
   return(df)
 }
 

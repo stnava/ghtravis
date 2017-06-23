@@ -18,7 +18,7 @@ latest_release_with_binary = function(repo,
                                       verbose = TRUE,
                                       ...){
 
-  df = binary_release_table(repo = repo, pat = pat, ...)
+  df = binary_release_table(repo = repo, pat = pat, verbose = verbose, ...)
   if (is.null(nrow(df))) {
     return(NA)
   }
