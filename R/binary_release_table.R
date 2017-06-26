@@ -78,7 +78,8 @@ binary_release_table = function(
   df$asset_updated_at = make_time(df$asset_updated_at)
   df$asset_created_at = make_time(df$asset_created_at)
 
-  ord = order(df$asset_created_at, df$asset_updated_at, decreasing = TRUE)
+  # ord = order(df$asset_created_at, df$asset_updated_at, decreasing = TRUE)
+  ord = order(df$asset_updated_at, df$asset_created_at, decreasing = TRUE)
   df = df[ord, ]
 
   if (verbose) {

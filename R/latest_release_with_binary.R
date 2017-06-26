@@ -45,7 +45,8 @@ latest_release_with_binary = function(repo,
       ddf = ddf[ ddf$commit.sha %in% ref, ]
     }
   }
-  ord = order(ddf$asset_created_at, ddf$asset_updated_at, decreasing = TRUE)
+  # ord = order(ddf$asset_created_at, ddf$asset_updated_at, decreasing = TRUE)
+  ord = order(df$asset_updated_at, df$asset_created_at, decreasing = TRUE)
   ddf = ddf[ord, ]
   if (verbose) {
     message("Table is")
