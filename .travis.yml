@@ -4,9 +4,7 @@ cache: packages
 os:
   - linux
   - osx
-
-r_check_args: --install-args=--build
-
+r_check_args: "--install-args=--build"
 after_success:
   - Rscript -e 'covr::coveralls(type = "all")'
 
@@ -14,10 +12,9 @@ deploy:
   provider: releases
   skip_cleanup: true
   api_key:
-    secure: CrAg7DdOcmeelrUmDGeWDMVu59LSI4UlPMvhT6LRgaGyULbwsDNI93qan4JfLu3f1E2jFoQGKp+1Ap/CK5Rn7+/WVC0Z++ncNLvvbXI1FGPlYIk0a1JgYOkVPJiQot5wPizpQnBbyUgwJbuJP+67u5FYdrsxAmJeOYB2NOVdLOPk7OaqlXHX0P2iAbsXkJALnTJ9NuFsH4sdVvJzmAAQI43nKuCp7HBw8FhgLLeUFzN7zeATrPqItQ9QP3dJnLD70yd1sexah4FkG7WffwrTnjgQBJvsH5hBCHAoiy+opdwk/vWfd4Uenak0+GgKGurzA30qsn9lCLvf3yfIiEzATMYjkKIVGl4vlLa4lv5FkMMzWg9y9+lgqS8e9Yh4I4LC3QEgDwvNJAao9QAHMzd6uHtW5/St8HCRTpIO+tJPkntpDeOL8Jq6hfgwyG5d99/zpWlKVDGStTxmxauNUlimgi+glWnSDWCj5jbou4g/HvYws41YWTqmjlpvyLIZbYpyaZwwTiEkKc7bx9n3y5ikw1tLkTN9FgfNkiz9fZYfjmPbVtIU/pOpvXVNSgXFQsanm01anjV+v25//AdsKsQyG6arDMTS3pIqUuiOYgJGnTepryBKoaFa2XVnNGzy406qpbE5dArB75fu64o+gytpQ7qcbM9ebg7eNLw5x0pV438=
+    secure: j+PBahXCdziYfFXXQnwsx7lOHmnH+VqV8VmfAkGYSwIboXrSHPrOXnLk1Oepeu4G1wO5HPMqajLU0bewx4ORv1y/pQPF7oO8KE+Jbr5adZuTKm5nQL29krS/jS8WF4/aF1fzQDjqmE5WuK3lC8BdNrrPaFLRzSGFOr6ZFwMik1On7C2HcnDV7k0mwo/pYzNBy2E/xF5s5tctq4yWLqmEHfUc56ktmZ5kyvlbYypdGJPxKeOCBe4qsgviTULpmkSiMehDdo+rIvK5RDztmQbmytXuULPcIHzTKWFZ78qziXrFbTY5QirC5LSo6Seg1yo4izj/zBRskDnVGLBdvGm382wmod1nax8sOAvprDa9mdMEDaxOBAa6YFdYvbqIBx2Bd217SmicGyhRhUsWWZ2uUF4opy3rfxki30roqX8vp7SlfLMxmoU1aoNy+KkUi3UHoVwqAvqLYUJ3e3Kjv9QTiDnCnZzR6zgjxn3SXnN4jpYu6hJxxCsGFANRpnNNe9v2NOII/phlGYP86F38Fss4p8gQWRdheoEqw0gL1DbxOGaZD0MAmMFMtqe6j5xM4oTAMKQnft/Xzj6SxeOGazYe2taBXN/9T82da8jqg8rlmg34Zzbsa1FrCpWbmM6QnXlVZH2qVBEn7UqyQ837/ERJxLvNL0mdQoeZGtmqeYDO0QI=
   file_glob: true
   file: ghtravis*.t*gz
   'on':
     tags: true
     repo: muschellij2/ghtravis
-
