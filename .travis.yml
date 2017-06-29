@@ -5,9 +5,10 @@ os:
   - linux
   - osx
 
+r_check_args: --install-args=--build
+
 after_success:
-  - Rscript -e 'covr::coveralls()'
-  - install_build_with_tag  
+  - Rscript -e 'covr::coveralls(type = "all")'
 
 deploy:
   provider: releases
