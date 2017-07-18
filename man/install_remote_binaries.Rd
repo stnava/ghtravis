@@ -5,7 +5,7 @@
 \title{Install Binaries from Remotes}
 \usage{
 install_remote_binaries(path = "DESCRIPTION", remotes = NULL,
-  package = NULL, verbose = TRUE)
+  package = NULL, verbose = TRUE, method = "wget", ...)
 }
 \arguments{
 \item{path}{Path to DESCRIPTION file
@@ -17,6 +17,10 @@ passed to \code{\link{remote_binaries}}}
 \item{package}{Specific package to install}
 
 \item{verbose}{Print diagnostic messages}
+
+\item{method}{method to download, passed to \code{\link{download.file}}}
+
+\item{...}{additional arguments passed to \code{\link{install.packages}}}
 }
 \value{
 Invisible NULL

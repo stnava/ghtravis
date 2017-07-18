@@ -8,6 +8,9 @@
 #' passed to \code{\link{remote_binaries}}
 #' @param package Specific package to install
 #' @param verbose Print diagnostic messages
+#' @param method method to download, passed to \code{\link{download.file}}
+#' @param ... additional arguments passed to \code{\link{install.packages}}
+#'
 #'
 #' @return Invisible NULL
 #' @export
@@ -25,7 +28,9 @@ install_remote_binaries = function(
   remotes = NULL,
   package = NULL,
   # update_only = FALSE,
-  verbose = TRUE
+  verbose = TRUE,
+  method = "wget",
+  ...
 ) {
 
   urls = remote_binaries(path = path, remotes = remotes, verbose = verbose)
@@ -62,13 +67,14 @@ install_remote_binaries = function(
 
         download.file(
           url, destfile,
-          method = "wget",
+          method = method,
           quiet = !verbose)
 
         install.packages(
           destfile,
           repos = NULL,
-          type = .Platform$pkgType)
+          type = .Platform$pkgType,
+          ...)
       }
     }
     # if (!drop_all) {
