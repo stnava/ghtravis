@@ -7,6 +7,8 @@
 #' @return Nothing
 #' @export
 #' @import desc
+#' @importFrom utils as.person
+
 cat_desc_elements = function(path = "DESCRIPTION"){
   desc = description$new(file = path)
   desc$coerce_authors_at_r()

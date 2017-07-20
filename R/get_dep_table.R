@@ -26,6 +26,9 @@ get_dep_table = function(
   parsed <- lapply(dependencies,
                    devtools::parse_deps)
   deps = do.call("rbind", parsed)
+  if (is.null(deps)) {
+    return(NULL)
+  }
   if (nrow(deps) == 0) {
     return(NULL)
   }

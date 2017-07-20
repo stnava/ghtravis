@@ -28,10 +28,14 @@ remote_order = function(
 
   L = remote_package_deps(
     remotes = remotes,
-    dependencies =  c("Depends", "Imports"),
+    dependencies =  c("Depends", "Imports", "Suggests"),
     ...)
   packs = names(L)
-  stopifnot(all(all_packs %in% packs))
+  if (!all(all_packs %in% packs)) {
+    stop(paste0(
+      "Remote given but not in Depends, Imports, Suggests.  If LinkingTo,",
+      " then must be in Imports as well!"))
+  }
   names(remotes) = packs
   dep_mat = sapply(L, function(x) {
     packs %in% x$name
