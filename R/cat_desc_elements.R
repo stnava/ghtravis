@@ -39,6 +39,7 @@ cat_desc_elements = function(path = "DESCRIPTION",
   col_deps = sapply(dep_types,
                     collapser)
   names(col_deps) = dep_types
+  col_deps = unlist(col_deps)
 
   paster = function(x, y) {
     if (length(y) == 0) {
