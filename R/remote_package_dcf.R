@@ -21,7 +21,10 @@ get_remote_package_dcf = function(
   }
 
   if (length(remotes) > 1) {
-    res = lapply(remotes, get_remote_package_dcf, pat = pat, url = url, ...)
+    res = vapply(remotes, get_remote_package_dcf, FUN.VALUE = NA_character_,
+                 pat = pat, url = url, ...)
+    names(res) = remotes
+    res = vapply(res, unname, FUN.VALUE = NA_character_)
     return(res)
   }
   remote = parse_one_remote(remotes)
@@ -35,21 +38,31 @@ get_remote_package_dcf = function(
                    github_auth(pat),
                    httr::write_disk(path = tmp))
   if (httr::status_code(req) >= 400) {
-    tmp = NA
+    tmp = NA_character_
   }
+  names(tmp) = remotes
   return(tmp)
 }
 
 #' @export
 #' @rdname get_remote_package_dcf
 remote_package_dcf = function(...) {
-  tmp = get_remote_package_dcf(...)
-  if (is.na(tmp)) {
-    L = list(Package = NA,
-             Version = NA)
-  } else {
-    L = read_dcf(tmp)$dcf
+  dcfs = get_remote_package_dcf(...)
+  get_pack = function(tmp) {
+    if (is.na(tmp)) {
+      L = list(Package = NA,
+               Version = NA)
+    } else {
+      L = read_dcf(tmp)$dcf
+    }
+    return(L)
   }
+  if (length(dcfs) > 1) {
+    L = lapply(dcfs, get_pack)
+  } else {
+    L = get_pack(dcfs)
+  }
+
   return(L)
 }
 
