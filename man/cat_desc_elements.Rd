@@ -5,12 +5,14 @@
 \alias{cat_desc_elements_remote}
 \title{Print Description Elements out}
 \usage{
-cat_desc_elements(path = "DESCRIPTION")
+cat_desc_elements(path = "DESCRIPTION", dep_types = desc::dep_types)
 
 cat_desc_elements_remote(repo, ...)
 }
 \arguments{
 \item{path}{path to DESCRIPTION file}
+
+\item{dep_types}{Types of dependencies to show}
 
 \item{repo}{remote repository on GitHub}
 

@@ -2,13 +2,15 @@
 #'
 #' @param path path to DESCRIPTION file
 #' @param repo remote repository on GitHub
+#' @param dep_types Types of dependencies to show
 #' @param ... Additional arguments passed to \code{\link{get_remote_package_dcf}}
 #'
 #' @return Nothing
 #' @export
 #' @import desc
 #' @importFrom utils as.person
-cat_desc_elements = function(path = "DESCRIPTION"){
+cat_desc_elements = function(path = "DESCRIPTION",
+                             dep_types = desc::dep_types){
   desc = description$new(file = path)
   desc$coerce_authors_at_r()
   desc$del("Author")
@@ -17,32 +19,24 @@ cat_desc_elements = function(path = "DESCRIPTION"){
   man = as.person(man)
 
   ver = as.character(desc$get_version())
-  dep_types = c("Depends",
-                "Imports",
-                "Suggests")
+
   deps = desc$get_deps()
+  # dep_types = c("Depends",
+  #               "Imports",
+  #               "Suggests")
   deps = deps[ deps$type %in% dep_types,, drop = FALSE]
 
   collapser = function(get_type) {
     x = deps[ deps$type %in% get_type,, drop = FALSE]
     if (nrow(x) > 0) {
       pack = deparse_deps(x)
-      # pack = x$package
-      # pack = setdiff(pack, "R")
-      # pack = setdiff(pack,
-      # 	c("R", "methods",
-      # 		"stats", "utils",
-      # 		"base",
-      # 		"graphics",
-      # 		"grDevices"))
-      # pack = paste(pack,
-      #              collapse = ", ")
+      pack = paste0(get_type, ": ", pack)
     } else {
       pack = NULL
     }
     return(pack)
   }
-  col_deps = lapply(dep_types,
+  col_deps = sapply(dep_types,
                     collapser)
   names(col_deps) = dep_types
 
@@ -58,11 +52,12 @@ cat_desc_elements = function(path = "DESCRIPTION"){
     paste("Version:", ver),
     paste("Maintainer:", format(man,
                                 include = c("given", "family"))),
-    paste("Email:", man$email),
-    paster("Depends:", col_deps[["Depends"]]),
-    paster("Imports:", col_deps[["Imports"]]),
-    paster("Suggests:", col_deps[["Suggests"]])
+    paste("Email:", man$email)
   )
+  if ( length(col_deps) > 0) {
+    res = c(res, col_deps)
+  }
+
   cat(res, sep = "\n")
   return(invisible(NULL))
 }
