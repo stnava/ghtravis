@@ -65,24 +65,21 @@ remote_package_deps = function(
   # packs = rep(NA, length = length(tmp_dcf))
   for (iL in seq_along(tmp_dcf)) {
     tmp = tmp_dcf[[iL]]
-    if (is.na(tmp)) {
-      L[[iL]] = NULL
-    } else {
+    names(L)[iL] = read_dcf(path = tmp)$dcf$Package
+  }
+  names(tmp_dcf) = names(L)
+
+  for (iL in seq_along(tmp_dcf)) {
+    tmp = tmp_dcf[[iL]]
+    if (!is.na(tmp)) {
       # print(tmp)
       x = get_dep_table(path = tmp,
                         dependencies = dependencies)
-      L[[iL]] = x
-
       if (!is.null(x)) {
-        if (nrow(x) > 0) {
-          names(L)[iL] = read_dcf(path = tmp)$dcf$Package
-
-        }
+        L[[iL]] = x
       }
-      # packs[iL] = read_dcf(tmp)$dcf$Package
     }
   }
-  # names(L) = packs
   return(L)
 }
 

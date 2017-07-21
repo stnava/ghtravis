@@ -31,9 +31,13 @@ remote_order = function(
     dependencies =  c("Depends", "Imports", "Suggests"),
     ...)
   packs = names(L)
-  if (!all(all_packs %in% packs)) {
+  check = all_packs %in% packs
+  if (!all(check)) {
+    bad = all_packs[ !check ]
+    bad = paste(bad, collapse = ", ")
     stop(paste0(
-      "Remote given but not in Depends, Imports, Suggests.  If LinkingTo,",
+      "Remotes given for ", bad,
+      " but not in Depends, Imports, Suggests.  If LinkingTo,",
       " then must be in Imports as well!"))
   }
   names(remotes) = packs

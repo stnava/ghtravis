@@ -8,7 +8,6 @@
 #' @export
 #' @import desc
 #' @importFrom utils as.person
-
 cat_desc_elements = function(path = "DESCRIPTION"){
   desc = description$new(file = path)
   desc$coerce_authors_at_r()
@@ -27,16 +26,17 @@ cat_desc_elements = function(path = "DESCRIPTION"){
   collapser = function(get_type) {
     x = deps[ deps$type %in% get_type,, drop = FALSE]
     if (nrow(x) > 0) {
-      pack = x$package
-      pack = setdiff(pack, "R")
+      pack = deparse_deps(x)
+      # pack = x$package
+      # pack = setdiff(pack, "R")
       # pack = setdiff(pack,
       # 	c("R", "methods",
       # 		"stats", "utils",
       # 		"base",
       # 		"graphics",
       # 		"grDevices"))
-      pack = paste(pack,
-                   collapse = ", ")
+      # pack = paste(pack,
+      #              collapse = ", ")
     } else {
       pack = NULL
     }
@@ -72,4 +72,14 @@ cat_desc_elements = function(path = "DESCRIPTION"){
 cat_desc_elements_remote = function(repo, ...) {
   path = get_remote_package_dcf(remotes = repo, ...)
   cat_desc_elements(path = path)
+}
+
+# taken from desc
+deparse_deps = function (deps) {
+  tapply(seq_len(nrow(deps)), deps$type, function(x) {
+    pkgs <- paste0(deps$package[x],
+                   ifelse(deps$version[x] ==
+                            "*", "",
+                          paste0(" (", deps$version[x], ")")), collapse = ", ")
+  })
 }
