@@ -10,5 +10,6 @@ Imports: utils, devtools, yaml, httr, desc (>= 1.1.1.9999)
 License: GPL-2
 Encoding: UTF-8
 LazyData: true
+Remotes: muschellij2/desc
 RoxygenNote: 6.0.1.9000
 Suggests: covr
