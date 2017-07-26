@@ -65,7 +65,9 @@ remote_package_deps = function(
   # packs = rep(NA, length = length(tmp_dcf))
   for (iL in seq_along(tmp_dcf)) {
     tmp = tmp_dcf[[iL]]
-    names(L)[iL] = read_dcf(path = tmp)$dcf$Package
+    if (!is.na(tmp)) {
+      names(L)[iL] = read_dcf(path = tmp)$dcf$Package
+    }
   }
   names(tmp_dcf) = names(L)
 
