@@ -103,6 +103,10 @@ install_remote_binaries = function(
         drop_remotes(path = path, drop_remotes = remotes)
       }
     }
+  } else {
+    if (verbose) {
+      message("No Binaries Found, exiting")
+    }
   }
-  return(NULL)
+  return(invisible(NULL))
 }
