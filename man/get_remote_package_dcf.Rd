@@ -3,11 +3,14 @@
 \name{get_remote_package_dcf}
 \alias{get_remote_package_dcf}
 \alias{remote_package_dcf}
+\alias{has_remote_dcf}
 \title{Read Remote Package DESCRIPTION file}
 \usage{
 get_remote_package_dcf(remotes, pat = NULL, url = "https://github.com", ...)
 
 remote_package_dcf(...)
+
+has_remote_dcf(remotes, pat = NULL, url = "https://github.com", ...)
 }
 \arguments{
 \item{remotes}{Repository name}

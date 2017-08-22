@@ -36,7 +36,8 @@ get_remote_package_dcf = function(
                 collapse = "/")
   req <- httr::GET(url, path = path,
                    github_auth(pat),
-                   httr::write_disk(path = tmp))
+                   httr::write_disk(path = tmp),
+                   httr::content_type("text/plain"))
   if (httr::status_code(req) >= 400) {
     tmp = NA_character_
   }
@@ -67,3 +68,31 @@ remote_package_dcf = function(...) {
 }
 
 
+#' @export
+#' @rdname get_remote_package_dcf
+has_remote_dcf = function(
+  remotes,
+  pat = NULL,
+  url = "https://github.com",
+  ...) {
+  if (is.null(pat)) {
+    pat = devtools::github_pat(quiet = TRUE)
+  }
+  if (length(remotes) > 1) {
+    res = vapply(remotes, has_remote_dcf, FUN.VALUE = logical(1),
+                 pat = pat, url = url, ...)
+    names(res) = remotes
+    return(res)
+  }
+  remote = ghtravis::parse_one_remote(remotes)
+
+  path <- paste(c(remote$username,
+                  remote$repo, "raw", remote$ref,
+                  remote$subdir, "DESCRIPTION"),
+                collapse = "/")
+  req <- httr::HEAD(url, path = path,
+                    github_auth(pat),
+                    httr::content_type("text/plain"))
+  code = httr::status_code(req)
+  code == 200
+}
