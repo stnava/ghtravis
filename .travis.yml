@@ -1,10 +1,20 @@
 language: R
 sudo: false
 cache: packages
+warnings_are_errors: true
+r_check_args: "--as-cran --install-args=--build"
+
 os:
   - linux
   - osx
-r_check_args: "--install-args=--build"
+
+before_install:
+  - wget -O travis_helpers.sh http://bit.ly/travis_helpers
+  - source travis_helpers.sh
+  - rm travis_helpers.sh
+  - PACKAGE_NAME=`package_name`
+  - PACKAGE_DIRECTORY=`basename ${PWD}`
+
 after_success:
   - Rscript -e 'covr::coveralls(type = "all")'
 
@@ -14,7 +24,7 @@ deploy:
   api_key:
     secure: j+PBahXCdziYfFXXQnwsx7lOHmnH+VqV8VmfAkGYSwIboXrSHPrOXnLk1Oepeu4G1wO5HPMqajLU0bewx4ORv1y/pQPF7oO8KE+Jbr5adZuTKm5nQL29krS/jS8WF4/aF1fzQDjqmE5WuK3lC8BdNrrPaFLRzSGFOr6ZFwMik1On7C2HcnDV7k0mwo/pYzNBy2E/xF5s5tctq4yWLqmEHfUc56ktmZ5kyvlbYypdGJPxKeOCBe4qsgviTULpmkSiMehDdo+rIvK5RDztmQbmytXuULPcIHzTKWFZ78qziXrFbTY5QirC5LSo6Seg1yo4izj/zBRskDnVGLBdvGm382wmod1nax8sOAvprDa9mdMEDaxOBAa6YFdYvbqIBx2Bd217SmicGyhRhUsWWZ2uUF4opy3rfxki30roqX8vp7SlfLMxmoU1aoNy+KkUi3UHoVwqAvqLYUJ3e3Kjv9QTiDnCnZzR6zgjxn3SXnN4jpYu6hJxxCsGFANRpnNNe9v2NOII/phlGYP86F38Fss4p8gQWRdheoEqw0gL1DbxOGaZD0MAmMFMtqe6j5xM4oTAMKQnft/Xzj6SxeOGazYe2taBXN/9T82da8jqg8rlmg34Zzbsa1FrCpWbmM6QnXlVZH2qVBEn7UqyQ837/ERJxLvNL0mdQoeZGtmqeYDO0QI=
   file_glob: true
-  file: ghtravis*.t*gz
+  file: ${PACKAGE_NAME}*.t*gz
   'on':
     tags: true
-    repo: muschellij2/ghtravis
+    repo: muschellij2/${PACKAGE_DIRECTORY}
