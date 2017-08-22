@@ -44,7 +44,9 @@ remote_order = function(
   dep_mat = sapply(L, function(x) {
     packs %in% x$name
     })
+  dep_mat = as.matrix(dep_mat)
   rownames(dep_mat) = packs
+  colnames(dep_mat) = names(L)
 
   install_order = list()
   i = 1

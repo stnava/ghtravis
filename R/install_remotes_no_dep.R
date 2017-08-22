@@ -31,7 +31,7 @@ install_remotes_no_dep = function(
   }
   if (reorder) {
     message("Reordering Remotes")
-    reorder_remotes(path = path)
+    reorder_remotes(path = path, verbose = verbose)
   }
   remotes = subset_remote(path = path, package = package)
   if (length(remotes) == 0) {
