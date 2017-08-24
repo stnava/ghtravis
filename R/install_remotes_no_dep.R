@@ -9,7 +9,6 @@
 #' @param ... arguments to pass to install_github
 #' @return Character vector of remotes
 #'
-#' @importFrom devtools install_github
 #' @return Output of \code{\link{install_github}}, indicator
 #' of TRUE/FALSE for installation
 #' @export
@@ -17,6 +16,7 @@
 #' @examples \dontrun{
 #'   install_remotes_no_dep()
 #' }
+#' @importFrom devtools install_github
 install_remotes_no_dep = function(
   path = "DESCRIPTION",
   package = NULL,
@@ -49,7 +49,7 @@ install_remotes_no_dep = function(
                  verbose = verbose)
   }
   remotes = remotes[ !(remotes %in% "") ]
-  res = sapply(remotes, devtools::install_github,
+  res = sapply(remotes, install_github,
          auth_token = github_pat(quiet = TRUE),
          upgrade_dependencies = FALSE, ...)
   names(res) = remotes
