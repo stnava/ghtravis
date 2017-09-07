@@ -40,18 +40,28 @@ install_remotes_no_dep = function(
   if (all(remotes == "")) {
     return(NULL)
   }
-  if (drop) {
-    if (verbose) {
-      message("Dropping Remotes")
-    }
-    drop_remotes(path = path, drop_remotes = remotes,
-                 reorder = reorder,
-                 verbose = verbose)
-  }
   remotes = remotes[ !(remotes %in% "") ]
-  res = sapply(remotes, install_github,
-         auth_token = github_pat(quiet = TRUE),
-         upgrade_dependencies = FALSE, ...)
+
+
+  res = sapply(remotes, function(x) {
+    r = install_github(
+      repo = x,
+      auth_token = github_pat(quiet = TRUE),
+      upgrade_dependencies = FALSE, ...)
+    if (r) {
+      if (drop) {
+        if (verbose) {
+          message(paste0("Dropping Remote: ", x))
+        }
+        drop_remotes(
+          path = path,
+          drop_remotes = x,
+          reorder = FALSE,
+          verbose = verbose)
+      }
+    }
+    return(r)
+  })
   names(res) = remotes
   return(res)
 }

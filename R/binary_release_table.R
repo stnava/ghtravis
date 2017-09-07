@@ -58,7 +58,7 @@ binary_release_table = function(
     return(NA)
   }
 
-  cn = c("asset_updated_at", "asset_created_at",
+  cn = c("url", "assets_url", "asset_updated_at", "asset_created_at",
          "tag_name", "created_at", "published_at",
          "asset_name", "asset_label", "asset_download_count",
          "asset_browser_download_url")
