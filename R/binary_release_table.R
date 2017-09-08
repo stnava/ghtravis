@@ -156,7 +156,7 @@ binary_table_no_tags = function(
         assets = matrix(NA, ncol = length(assets_hdrs))
         assets = data.frame(assets)
         colnames(assets) = assets_hdrs
-        ret = cbind(df, assets)
+        ret = cbind(dd, assets)
         return(ret)
       } else {
         return(NULL)
