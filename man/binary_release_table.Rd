@@ -5,14 +5,17 @@
 \alias{binary_table_no_tags}
 \title{Get Binary Release Table for a repository}
 \usage{
-binary_release_table(repo, pat = NULL, verbose = TRUE, ...)
+binary_release_table(repo, pat = NULL, force = FALSE, verbose = TRUE, ...)
 
-binary_table_no_tags(repo, pat = NULL, ...)
+binary_table_no_tags(repo, pat = NULL, force = FALSE, verbose = TRUE, ...)
 }
 \arguments{
 \item{repo}{Remote repository name}
 
 \item{pat}{GitHub Personal Authentication Token (PAT)}
+
+\item{force}{if TRUE, then \code{binary_table_no_tags} will return
+the table even if no assets are in the release}
 
 \item{verbose}{print diagnostic messages}
 
@@ -31,4 +34,5 @@ binary_release_table("muschellij2/ANTsR")
 repo = "stnava/ANTsR"
 binary_table_no_tags(repo)
 binary_table_no_tags("muschellij2/ANTsR")
+binary_table_no_tags("muschellij2/ANTsR", force = TRUE)
 }

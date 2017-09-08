@@ -4,6 +4,8 @@
 #' @param repo Remote repository name
 #' @param pat GitHub Personal Authentication Token (PAT)
 #' @param verbose print diagnostic messages
+#' @param force if TRUE, then \code{binary_table_no_tags} will return
+#' the table even if no assets are in the release
 #'
 #' @param ... additional arguments to \code{\link[httr]{GET}}
 #' @return \code{data.frame} of binary releases
@@ -18,6 +20,7 @@
 binary_release_table = function(
   repo,
   pat = NULL,
+  force = FALSE,
   verbose = TRUE,
   ...){
 
@@ -49,7 +52,9 @@ binary_release_table = function(
     print(tag_content)
   }
 
-  df = binary_table_no_tags(repo = xrepo, pat = pat, ...)
+  df = binary_table_no_tags(repo = xrepo, pat = pat,
+                            force = force,
+                            verbose = verbose, ...)
   if (verbose) {
     message("binary_table_no_tags is ")
     print(df)
@@ -58,7 +63,8 @@ binary_release_table = function(
     return(NA)
   }
 
-  cn = c("url", "assets_url", "asset_updated_at", "asset_created_at",
+  cn = c("url", "assets_url", "upload_url",
+         "id", "asset_updated_at", "asset_created_at",
          "tag_name", "created_at", "published_at",
          "asset_name", "asset_label", "asset_download_count",
          "asset_browser_download_url")
@@ -95,9 +101,12 @@ binary_release_table = function(
 #' repo = "stnava/ANTsR"
 #' binary_table_no_tags(repo)
 #' binary_table_no_tags("muschellij2/ANTsR")
+#' binary_table_no_tags("muschellij2/ANTsR", force = TRUE)
 binary_table_no_tags = function(
   repo,
   pat = NULL,
+  force = FALSE,
+  verbose = TRUE,
   ...){
 
   info = parse_one_remote(repo)
@@ -113,7 +122,9 @@ binary_table_no_tags = function(
 
   res = httr::GET(url, github_auth(pat), ...)
   httr::stop_for_status(res)
-  httr::message_for_status(res)
+  if (verbose) {
+    httr::message_for_status(res)
+  }
 
   ##########################
   # all releases
@@ -141,7 +152,15 @@ binary_table_no_tags = function(
       ret = merge(dd, assets, all = TRUE)
       return(ret)
     } else {
-      return(NULL)
+      if (force) {
+        assets = matrix(NA, ncol = length(assets_hdrs))
+        assets = data.frame(assets)
+        colnames(assets) = assets_hdrs
+        ret = cbind(df, assets)
+        return(ret)
+      } else {
+        return(NULL)
+      }
     }
   })
   df = do.call("rbind", df)
