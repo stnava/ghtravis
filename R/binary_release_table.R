@@ -149,6 +149,7 @@ binary_table_no_tags = function(
     if (!is.null(assets)) {
       colnames(assets) = paste0("asset_", colnames(assets))
       assets = ensure_colnames(assets, assets_hdrs)
+      assets = assets[, assets_hdrs, drop = FALSE]
       ret = merge(dd, assets, all = TRUE)
       return(ret)
     } else {
