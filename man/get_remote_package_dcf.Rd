@@ -19,7 +19,7 @@ has_remote_dcf(remotes, pat = NULL, url = "https://github.com", ...)
 
 \item{url}{URL for repo - github}
 
-\item{...}{not used}
+\item{...}{additional arguments to pass to \code{\link{GET}}}
 }
 \value{
 List of Package/Version DCF information

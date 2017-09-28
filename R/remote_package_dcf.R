@@ -3,7 +3,7 @@
 #' @param remotes Repository name
 #' @param pat GitHub Personal Authentication Token (PAT)
 #' @param url URL for repo - github
-#' @param ... not used
+#' @param ... additional arguments to pass to \code{\link{GET}}
 #'
 #' @return List of Package/Version DCF information
 #' @export
@@ -37,7 +37,8 @@ get_remote_package_dcf = function(
   req <- httr::GET(url, path = path,
                    github_auth(pat),
                    httr::write_disk(path = tmp),
-                   httr::content_type("text/plain"))
+                   httr::content_type("text/plain"),
+                   ...)
   if (httr::status_code(req) >= 400) {
     tmp = NA_character_
   }
@@ -92,7 +93,8 @@ has_remote_dcf = function(
                 collapse = "/")
   req <- httr::HEAD(url, path = path,
                     github_auth(pat),
-                    httr::content_type("text/plain"))
+                    httr::content_type("text/plain"),
+                    ...)
   code = httr::status_code(req)
   code == 200
 }
