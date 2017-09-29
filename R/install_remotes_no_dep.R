@@ -6,7 +6,7 @@
 #' @param reorder should remotes be reordered before running
 #' @param drop Remotes should be dropped after installing
 #' @param verbose Print diagnostic message
-#' @param force should the command run even if install_github fails?
+#' @param mustInstall should the command run even if install_github fails?
 #' @param ... arguments to pass to install_github
 #' @return Character vector of remotes
 #'
@@ -24,7 +24,7 @@ install_remotes_no_dep = function(
   reorder = TRUE,
   drop = TRUE,
   verbose = TRUE,
-  force = FALSE,
+  mustInstall = FALSE,
   ...) {
   if (!is.null(package)) {
     if (all(package == "")) {
@@ -52,7 +52,8 @@ install_remotes_no_dep = function(
     r = devtools::install_github(
       repo = x,
       auth_token = github_pat(quiet = TRUE),
-      upgrade_dependencies = FALSE, ...)
+      upgrade_dependencies = FALSE,
+      force = TRUE, ...)
     if (r) {
       if (drop) {
         if (verbose) {
@@ -65,7 +66,7 @@ install_remotes_no_dep = function(
           verbose = verbose)
       }
     } else {
-      if (!force) {
+      if (!mustInstall) {
         msg = paste0("Installing Remote: ", x,
                      " failed!")
         stop(msg)
