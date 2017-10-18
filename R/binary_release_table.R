@@ -47,18 +47,18 @@ binary_release_table = function(
     tag_content = as.data.frame(tag_content, stringsAsFactors = FALSE)
     # return(NA) # there should be no releases, but there may be somehow?
   }
-  if (verbose) {
-    message("tag_content is ")
-    print(tag_content)
-  }
+  # if (verbose) {
+  #   message("tag_content is ")
+  #   print(tag_content)
+  # }
 
   df = binary_table_no_tags(repo = xrepo, pat = pat,
                             force = force,
                             verbose = verbose, ...)
-  if (verbose) {
-    message("binary_table_no_tags is ")
-    print(df)
-  }
+  # if (verbose) {
+  #   message("binary_table_no_tags is ")
+  #   print(df)
+  # }
   if (all(is.na(df))) {
     return(NA)
   }
@@ -72,10 +72,10 @@ binary_release_table = function(
 
   # df = merge(tag_content, df, by = "tag_name", all.x = TRUE)
   df = merge(tag_content, df, by = "tag_name", all = TRUE)
-  if (verbose) {
-    message("merged data is is ")
-    print(df)
-  }
+  # if (verbose) {
+  #   message("merged data is is ")
+  #   print(df)
+  # }
   make_time = function(times) {
     strptime(times, format = "%Y-%m-%dT%H:%M:%SZ")
   }
@@ -88,10 +88,10 @@ binary_release_table = function(
   ord = order(df$asset_updated_at, df$asset_created_at, decreasing = TRUE)
   df = df[ord, ]
 
-  if (verbose) {
-    message("sorted data is is ")
-    print(df)
-  }
+  # if (verbose) {
+  #   message("sorted data is is ")
+  #   print(df)
+  # }
   return(df)
 }
 
