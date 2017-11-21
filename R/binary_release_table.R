@@ -120,27 +120,6 @@ binary_table_no_tags = function(
   }
   url = paste0("https://api.github.com/repos/", repo, "/releases")
 
-  get_next = function(links, ind = "next") {
-    if (is.null(links)) {
-      return(NULL)
-    }
-    links <- trimws(strsplit(links, ",")[[1]])
-    link_list <- lapply(links, function(x) {
-      x <- trimws(strsplit(x, ";")[[1]])
-      name <- sub("^.*\"(.*)\".*$", "\\1", x[2])
-      value <- sub("^<(.*)>$", "\\1", x[1])
-      c(name, value)
-    })
-    link_list <- structure(vapply(link_list, "[", "", 2),
-                           names = vapply(link_list,
-                                          "[", "", 1))
-    if (ind %in% names(link_list)) {
-      link_list[[ind]]
-    }
-    else {
-      NULL
-    }
-  }
   get_df = function(res) {
 
     httr::stop_for_status(res)
@@ -207,8 +186,14 @@ binary_table_no_tags = function(
   if (is.null(df)) {
     return(NA)
   }
-  if (nrow(df) == 0) {
-    return(NA)
+  if (is.matrix(df) || is.data.frame(df)) {
+    if (nrow(df) == 0) {
+      return(NA)
+    }
+  } else {
+    if (all(is.na(df))) {
+      return(NA)
+    }
   }
   return(df)
 }

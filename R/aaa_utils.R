@@ -45,3 +45,30 @@ bind_list = function(L) {
   return(L)
 }
 
+
+
+
+get_next = function(links, ind = "next") {
+  if (inherits(links, "response")) {
+    links = links$headers$link
+  }
+  if (is.null(links)) {
+    return(NULL)
+  }
+  links <- trimws(strsplit(links, ",")[[1]])
+  link_list <- lapply(links, function(x) {
+    x <- trimws(strsplit(x, ";")[[1]])
+    name <- sub("^.*\"(.*)\".*$", "\\1", x[2])
+    value <- sub("^<(.*)>$", "\\1", x[1])
+    c(name, value)
+  })
+  link_list <- structure(vapply(link_list, "[", "", 2),
+                         names = vapply(link_list,
+                                        "[", "", 1))
+  if (ind %in% names(link_list)) {
+    link_list[[ind]]
+  }
+  else {
+    NULL
+  }
+}

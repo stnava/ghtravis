@@ -25,20 +25,36 @@ tag_table = function(repo, pat = NULL, ...) {
   repo = paste0(user, "/", package)
 
   tag_url = paste0("https://api.github.com/repos/", repo, "/tags")
-  # args = list(url = tag_url)
   tag_res = httr::GET(tag_url, github_auth(pat), ...)
-  httr::stop_for_status(tag_res)
-  httr::message_for_status(tag_res)
-  tag_content = httr::content(tag_res)
+  # args = list(url = tag_url)
+  get_tag_content = function(tag_res) {
+    httr::stop_for_status(tag_res)
+    httr::message_for_status(tag_res)
+    tag_content = httr::content(tag_res)
 
 
-  tag_content = bind_list(tag_content)
-  if (!is.null(tag_content)) {
-    if (ncol(tag_content) > 0) {
-      cn = colnames(tag_content)
-      cn[ cn == "name"] = "tag_name"
-      colnames(tag_content) = cn
+    tag_content = bind_list(tag_content)
+    if (!is.null(tag_content)) {
+      if (ncol(tag_content) > 0) {
+        cn = colnames(tag_content)
+        cn[ cn == "name"] = "tag_name"
+        colnames(tag_content) = cn
+      }
     }
+    return(tag_content)
   }
+
+  tag_content = get_tag_content(tag_res)
+  links = tag_res$headers$link
+  next_link = get_next(links, ind = "next")
+  while (!is.null(next_link)) {
+    url = next_link
+    res = httr::GET(url, github_auth(pat), ...)
+    ddf = get_tag_content(res)
+    tag_content = rbind(tag_content, ddf)
+    links = res$headers$link
+    next_link = get_next(links, ind = "next")
+  }
+
   return(tag_content)
 }
