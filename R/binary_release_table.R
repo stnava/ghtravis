@@ -120,51 +120,89 @@ binary_table_no_tags = function(
   }
   url = paste0("https://api.github.com/repos/", repo, "/releases")
 
-  res = httr::GET(url, github_auth(pat), ...)
-  httr::stop_for_status(res)
-  if (verbose) {
-    httr::message_for_status(res)
+  get_next = function(links, ind = "next") {
+    if (is.null(links)) {
+      return(NULL)
+    }
+    links <- trimws(strsplit(links, ",")[[1]])
+    link_list <- lapply(links, function(x) {
+      x <- trimws(strsplit(x, ";")[[1]])
+      name <- sub("^.*\"(.*)\".*$", "\\1", x[2])
+      value <- sub("^<(.*)>$", "\\1", x[1])
+      c(name, value)
+    })
+    link_list <- structure(vapply(link_list, "[", "", 2),
+                           names = vapply(link_list,
+                                          "[", "", 1))
+    if (ind %in% names(link_list)) {
+      link_list[[ind]]
+    }
+    else {
+      NULL
+    }
   }
+  get_df = function(res) {
 
-  ##########################
-  # all releases
-  ##########################
-  hdrs = c("url", "assets_url", "upload_url", "html_url", "id", "tag_name",
-           "target_commitish", "name", "draft", "prerelease",
-           "created_at", "published_at", "tarball_url", "zipball_url")
+    httr::stop_for_status(res)
+    if (verbose) {
+      httr::message_for_status(res)
+    }
+
+    ##########################
+    # all releases
+    ##########################
+    hdrs = c("url", "assets_url", "upload_url", "html_url", "id", "tag_name",
+             "target_commitish", "name", "draft", "prerelease",
+             "created_at", "published_at", "tarball_url", "zipball_url")
 
 
-  assets_hdrs = c("asset_updated_at", "asset_created_at",
-                  "asset_name", "asset_label", "asset_download_count",
-                  "asset_browser_download_url")
-  cr = httr::content(res)
-  if (length(cr) == 0 ) {
-    return(NA)
-  }
-  df = lapply(cr, function(x) {
-    dd = unlist_df(x[hdrs])
-    dd = ensure_colnames(dd, hdrs)
+    assets_hdrs = c("asset_updated_at", "asset_created_at",
+                    "asset_name", "asset_label", "asset_download_count",
+                    "asset_browser_download_url")
+    cr = httr::content(res)
+    if (length(cr) == 0 ) {
+      return(NA)
+    }
+    df = lapply(cr, function(x) {
+      dd = unlist_df(x[hdrs])
+      dd = ensure_colnames(dd, hdrs)
 
-    assets = bind_list(x$assets)
-    if (!is.null(assets)) {
-      colnames(assets) = paste0("asset_", colnames(assets))
-      assets = ensure_colnames(assets, assets_hdrs)
-      assets = assets[, assets_hdrs, drop = FALSE]
-      ret = merge(dd, assets, all = TRUE)
-      return(ret)
-    } else {
-      if (force) {
-        assets = matrix(NA, ncol = length(assets_hdrs))
-        assets = data.frame(assets)
-        colnames(assets) = assets_hdrs
-        ret = cbind(dd, assets)
+      assets = bind_list(x$assets)
+      if (!is.null(assets)) {
+        colnames(assets) = paste0("asset_", colnames(assets))
+        assets = ensure_colnames(assets, assets_hdrs)
+        assets = assets[, assets_hdrs, drop = FALSE]
+        ret = merge(dd, assets, all = TRUE)
         return(ret)
       } else {
-        return(NULL)
+        if (force) {
+          assets = matrix(NA, ncol = length(assets_hdrs))
+          assets = data.frame(assets)
+          colnames(assets) = assets_hdrs
+          ret = cbind(dd, assets)
+          return(ret)
+        } else {
+          return(NULL)
+        }
       }
-    }
-  })
-  df = do.call("rbind", df)
+    })
+    df = do.call("rbind", df)
+
+  }
+
+  res = httr::GET(url, github_auth(pat), ...)
+  df = get_df(res)
+  links = res$headers$link
+  next_link = get_next(links, ind = "next")
+  while (!is.null(next_link)) {
+    url = next_link
+    res = httr::GET(url, github_auth(pat), ...)
+    ddf = get_df(res)
+    df = rbind(df, ddf)
+    links = res$headers$link
+    next_link = get_next(links, ind = "next")
+  }
+
 
   if (is.null(df)) {
     return(NA)
