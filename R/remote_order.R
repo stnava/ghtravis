@@ -26,6 +26,14 @@ remote_order = function(
   parsed = parse_remotes(remotes)
   all_packs = sapply(parsed, `[[`, "repo")
 
+  # all_packs = sapply(parsed, function(x) {
+  #   repo = x$repo
+  #   if (!is.null(x$subdir)) {
+  #     repo = x$subdir
+  #   }
+  #   return(repo)
+  # })
+
   L = remote_package_deps(
     remotes = remotes,
     dependencies =  c("Depends", "Imports", "Suggests"),
@@ -35,7 +43,7 @@ remote_order = function(
   if (!all(check)) {
     bad = all_packs[ !check ]
     bad = paste(bad, collapse = ", ")
-    stop(paste0(
+    warning(paste0(
       "Remotes given for ", bad,
       " but not in Depends, Imports, Suggests.  If LinkingTo,",
       " then must be in Imports as well!"))
