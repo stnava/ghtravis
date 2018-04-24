@@ -11,8 +11,10 @@ read_dcf <- function(path = "DESCRIPTION") {
     close(file)
   })
   fields <- colnames(read.dcf(file))
-  dcf = as.list(read.dcf(file,
-                         keep.white = fields, all = TRUE)[1, ])
+  dcf = read.dcf(file,
+                 keep.white = fields, all = TRUE)
+  dcf = dcf_collapser(dcf, cn = c("Imports", "Suggests", "Depends"))
+  dcf = as.list(dcf[1, ])
   return(list(fields = fields,
               dcf = dcf))
 }
