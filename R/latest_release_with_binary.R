@@ -23,7 +23,7 @@ latest_release_with_binary = function(
   repo,
   pat = NULL,
   verbose = TRUE,
-  check_r_version = FALSE,
+  check_r_version = TRUE,
   ...){
 
   df = binary_release_table(repo = repo, pat = pat, verbose = verbose, ...)

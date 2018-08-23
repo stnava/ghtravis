@@ -5,7 +5,7 @@
 \title{Install Binaries from Remotes}
 \usage{
 install_remote_binaries(path = "DESCRIPTION", remotes = NULL,
-  package = NULL, check_r_version = FALSE, verbose = TRUE,
+  package = NULL, check_r_version = TRUE, verbose = TRUE,
   method = "wget", ...)
 }
 \arguments{

@@ -5,7 +5,7 @@
 \title{Get the Latest Binary for a repository}
 \usage{
 latest_release_with_binary(repo, pat = NULL, verbose = TRUE,
-  check_r_version = FALSE, ...)
+  check_r_version = TRUE, ...)
 }
 \arguments{
 \item{repo}{Remote repository name}
