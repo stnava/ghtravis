@@ -5,6 +5,8 @@
 #' @param path Path to DESCRIPTION field
 #' @param package packages to subset if necessary
 #' @param verbose print diagnostic messages
+#' @param ... additional arguments passed to
+#' \code{\link{latest_release_with_binary}}
 #'
 #' @return List of remote binaries
 #' @export
@@ -20,7 +22,8 @@ remote_binaries = function(
   remotes = NULL,
   path = "DESCRIPTION",
   package = NULL,
-  verbose = TRUE
+  verbose = TRUE,
+  ...
 ) {
 
   if (is.null(remotes)) {
@@ -32,7 +35,8 @@ remote_binaries = function(
     if (verbose) {
       print(x)
     }
-    latest_release_with_binary(x, verbose = verbose)
+    latest_release_with_binary(x, verbose = verbose,
+                               ...)
     })
   names(urls) = packs
   no_urls = !sapply(urls, is.na)

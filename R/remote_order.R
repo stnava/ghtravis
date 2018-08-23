@@ -25,6 +25,9 @@ remote_order = function(
   }
   parsed = parse_remotes(remotes)
   all_packs = sapply(parsed, `[[`, "repo")
+  # nulls = sapply(all_packs, is.null)
+  # all_urls = sapply(parsed[nulls], `[[`, "url")
+
 
   # all_packs = sapply(parsed, function(x) {
   #   repo = x$repo

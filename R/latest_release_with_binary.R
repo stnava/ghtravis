@@ -4,19 +4,27 @@
 #' @param repo Remote repository name
 #' @param pat GitHub Personal Authentication Token (PAT)
 #' @param verbose print diagnostic messages
+#' @param check_r_version Check if R version is in the name of the
+#' tarball
 #' @param ... additional arguments to \code{\link[httr]{GET}}
 #' @return URL of the binary
 #' @export
 #'
 #' @examples
 #' repo = "stnava/ANTsR"
-#' latest_release_with_binary(repo)
+#' res = latest_release_with_binary(repo)
+#' res
+#' repo = "neuroconductor-devel/gifti"
+#' res = latest_release_with_binary(repo)
+#' res #'
 #' @importFrom httr GET content stop_for_status authenticate
 #' @importFrom devtools github_pat
-latest_release_with_binary = function(repo,
-                                      pat = NULL,
-                                      verbose = TRUE,
-                                      ...){
+latest_release_with_binary = function(
+  repo,
+  pat = NULL,
+  verbose = TRUE,
+  check_r_version = FALSE,
+  ...){
 
   df = binary_release_table(repo = repo, pat = pat, verbose = verbose, ...)
   if (is.null(nrow(df))) {
@@ -43,6 +51,14 @@ latest_release_with_binary = function(repo,
       return(NA)
     } else {
       ddf = ddf[ ddf$commit.sha %in% ref, ]
+    }
+  }
+  # Neuroconductor versioning
+  if (check_r_version) {
+    check_str = paste0("R", r_version(), sys_ext(), "$")
+    check = grepl(pattern = check_str, ddf$asset_name)
+    if (any(check)) {
+      ddf = ddf[ check, ]
     }
   }
   # ord = order(ddf$asset_created_at, ddf$asset_updated_at, decreasing = TRUE)

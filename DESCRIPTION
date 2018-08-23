@@ -1,7 +1,7 @@
 Package: ghtravis
 Type: Package
 Title: Interfaces with GitHub API and Travis CI
-Version: 0.9.2
+Version: 0.10.0
 Author: John Muschelli
 Maintainer: John Muschelli <muschellij2@gmail.com>
 Description: Interfaces and compares things on 'GitHub'
@@ -11,5 +11,5 @@ License: GPL-2
 Encoding: UTF-8
 LazyData: true
 Remotes: muschellij2/desc
-RoxygenNote: 6.0.1.9000
+RoxygenNote: 6.1.0
 Suggests: covr

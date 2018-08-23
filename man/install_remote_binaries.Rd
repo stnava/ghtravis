@@ -5,7 +5,8 @@
 \title{Install Binaries from Remotes}
 \usage{
 install_remote_binaries(path = "DESCRIPTION", remotes = NULL,
-  package = NULL, verbose = TRUE, method = "wget", ...)
+  package = NULL, check_r_version = FALSE, verbose = TRUE,
+  method = "wget", ...)
 }
 \arguments{
 \item{path}{Path to DESCRIPTION file
@@ -15,6 +16,9 @@ passed to \code{\link{remote_binaries}}}
 passed to \code{\link{remote_binaries}}}
 
 \item{package}{Specific package to install}
+
+\item{check_r_version}{Check if R version is in the name of the
+tarball}
 
 \item{verbose}{Print diagnostic messages}
 

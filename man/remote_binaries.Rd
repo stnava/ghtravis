@@ -5,7 +5,7 @@
 \title{Get Binaries from Remotes}
 \usage{
 remote_binaries(remotes = NULL, path = "DESCRIPTION", package = NULL,
-  verbose = TRUE)
+  verbose = TRUE, ...)
 }
 \arguments{
 \item{remotes}{Remotes to get the binaries for}
@@ -15,6 +15,9 @@ remote_binaries(remotes = NULL, path = "DESCRIPTION", package = NULL,
 \item{package}{packages to subset if necessary}
 
 \item{verbose}{print diagnostic messages}
+
+\item{...}{additional arguments passed to
+\code{\link{latest_release_with_binary}}}
 }
 \value{
 List of remote binaries

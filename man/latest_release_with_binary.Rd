@@ -4,7 +4,8 @@
 \alias{latest_release_with_binary}
 \title{Get the Latest Binary for a repository}
 \usage{
-latest_release_with_binary(repo, pat = NULL, verbose = TRUE, ...)
+latest_release_with_binary(repo, pat = NULL, verbose = TRUE,
+  check_r_version = FALSE, ...)
 }
 \arguments{
 \item{repo}{Remote repository name}
@@ -12,6 +13,9 @@ latest_release_with_binary(repo, pat = NULL, verbose = TRUE, ...)
 \item{pat}{GitHub Personal Authentication Token (PAT)}
 
 \item{verbose}{print diagnostic messages}
+
+\item{check_r_version}{Check if R version is in the name of the
+tarball}
 
 \item{...}{additional arguments to \code{\link[httr]{GET}}}
 }
@@ -23,5 +27,9 @@ Parses a remote and gets a URL for a binary release
 }
 \examples{
 repo = "stnava/ANTsR"
-latest_release_with_binary(repo)
+res = latest_release_with_binary(repo)
+res
+repo = "neuroconductor-devel/gifti"
+res = latest_release_with_binary(repo)
+res #'
 }

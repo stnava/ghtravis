@@ -7,7 +7,8 @@
 \usage{
 deployed_tarball_version(repo = "stnava/ITKR", tag = "latest")
 
-deployed_tarball(repo = "stnava/ITKR", tag = "latest", version = NULL)
+deployed_tarball(repo = "stnava/ITKR", tag = "latest",
+  version = NULL)
 }
 \arguments{
 \item{repo}{GitHub repository name}

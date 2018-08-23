@@ -5,9 +5,11 @@
 \alias{binary_table_no_tags}
 \title{Get Binary Release Table for a repository}
 \usage{
-binary_release_table(repo, pat = NULL, force = FALSE, verbose = TRUE, ...)
+binary_release_table(repo, pat = NULL, force = FALSE, verbose = TRUE,
+  ...)
 
-binary_table_no_tags(repo, pat = NULL, force = FALSE, verbose = TRUE, ...)
+binary_table_no_tags(repo, pat = NULL, force = FALSE, verbose = TRUE,
+  ...)
 }
 \arguments{
 \item{repo}{Remote repository name}

@@ -9,6 +9,8 @@
 #' @param package Specific package to install
 #' @param verbose Print diagnostic messages
 #' @param method method to download, passed to \code{\link{download.file}}
+#' @param check_r_version Check if R version is in the name of the
+#' tarball
 #' @param ... additional arguments passed to \code{\link{install.packages}}
 #'
 #'
@@ -27,13 +29,16 @@ install_remote_binaries = function(
   path = "DESCRIPTION",
   remotes = NULL,
   package = NULL,
+  check_r_version = FALSE,
   # update_only = FALSE,
   verbose = TRUE,
   method = "wget",
   ...
 ) {
 
-  urls = remote_binaries(path = path, remotes = remotes, verbose = verbose)
+  urls = remote_binaries(path = path, remotes = remotes,
+                         verbose = verbose,
+                         check_r_version = check_r_version)
   if (!is.null(package)) {
     if (all(package != "")) {
       urls = urls[intersect(package, names(urls))]
