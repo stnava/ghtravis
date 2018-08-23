@@ -55,7 +55,7 @@ latest_release_with_binary = function(
   }
   # Neuroconductor versioning
   if (check_r_version) {
-    check_str = paste0("R", r_version(), sys_ext(), "$")
+    check_str = paste0("_R", r_version(), sys_ext(), "$")
     check = grepl(pattern = check_str, ddf$asset_name)
     if (any(check)) {
       ddf = ddf[ check, ]
