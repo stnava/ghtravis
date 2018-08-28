@@ -58,11 +58,12 @@ latest_release_with_binary = function(
     check_str = paste0("_R", r_version(), sys_ext(), "$")
     check = grepl(pattern = check_str, ddf$asset_name)
     if (any(check)) {
+      check[is.na(check)] = FALSE
       ddf = ddf[ check, ]
     }
   }
   # ord = order(ddf$asset_created_at, ddf$asset_updated_at, decreasing = TRUE)
-  ord = order(df$asset_updated_at, df$asset_created_at, decreasing = TRUE)
+  ord = order(ddf$asset_updated_at, ddf$asset_created_at, decreasing = TRUE)
   ddf = ddf[ord, ]
   if (verbose) {
     message("Table is")
