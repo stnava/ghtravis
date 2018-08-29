@@ -6,6 +6,8 @@
 #' @param verbose print diagnostic messages
 #' @param check_r_version Check if R version is in the name of the
 #' tarball
+#' @param check_sha Should the SHA be checked when trying to get
+#' binaries
 #' @param ... additional arguments to \code{\link[httr]{GET}}
 #' @return URL of the binary
 #' @export
@@ -24,6 +26,7 @@ latest_release_with_binary = function(
   pat = NULL,
   verbose = TRUE,
   check_r_version = TRUE,
+  check_sha = TRUE,
   ...){
 
   df = binary_release_table(repo = repo, pat = pat, verbose = verbose, ...)
@@ -44,13 +47,15 @@ latest_release_with_binary = function(
 
   ddf = df
   ddf = ddf[ grep(sys_ext(), ddf$asset_name, fixed = TRUE),]
-  if (!(ref %in% c("master", ""))) {
-    if (!(ref %in% ddf$commit.sha)) {
-      warning(paste0("SHA was given, but no release associated",
-                     " with it!, not installing, returning NA"))
-      return(NA)
-    } else {
-      ddf = ddf[ ddf$commit.sha %in% ref, ]
+  if (check_sha) {
+    if (!(ref %in% c("master", ""))) {
+      if (!(ref %in% ddf$commit.sha)) {
+        warning(paste0("SHA was given, but no release associated",
+                       " with it!, not installing, returning NA"))
+        return(NA)
+      } else {
+        ddf = ddf[ ddf$commit.sha %in% ref, ]
+      }
     }
   }
   # Neuroconductor versioning

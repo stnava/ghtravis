@@ -5,8 +5,8 @@
 \title{Install Binaries from Remotes}
 \usage{
 install_remote_binaries(path = "DESCRIPTION", remotes = NULL,
-  package = NULL, check_r_version = TRUE, verbose = TRUE,
-  method = "wget", ...)
+  package = NULL, check_r_version = TRUE, check_sha = TRUE,
+  verbose = TRUE, method = "wget", ...)
 }
 \arguments{
 \item{path}{Path to DESCRIPTION file
@@ -19,6 +19,9 @@ passed to \code{\link{remote_binaries}}}
 
 \item{check_r_version}{Check if R version is in the name of the
 tarball}
+
+\item{check_sha}{Should the SHA be checked when trying to get
+binaries}
 
 \item{verbose}{Print diagnostic messages}
 
