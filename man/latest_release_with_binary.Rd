@@ -17,10 +17,10 @@ latest_release_with_binary(repo, pat = NULL, verbose = TRUE,
 \item{check_r_version}{Check if R version is in the name of the
 tarball}
 
-\item{...}{additional arguments to \code{\link[httr]{GET}}}
-
-\item{check_sha}{Should the SHA be checked when trying to get
+\item{force_sha}{Should the SHA be checked when trying to get
 binaries}
+
+\item{...}{additional arguments to \code{\link[httr]{GET}}}
 }
 \value{
 URL of the binary

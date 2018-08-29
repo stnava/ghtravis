@@ -6,7 +6,7 @@
 #' @param verbose print diagnostic messages
 #' @param check_r_version Check if R version is in the name of the
 #' tarball
-#' @param check_sha Should the SHA be checked when trying to get
+#' @param force_sha Should the SHA be checked when trying to get
 #' binaries
 #' @param ... additional arguments to \code{\link[httr]{GET}}
 #' @return URL of the binary
