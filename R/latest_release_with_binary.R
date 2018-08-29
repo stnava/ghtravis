@@ -16,7 +16,7 @@
 #' repo = "stnava/ANTsR"
 #' res = latest_release_with_binary(repo)
 #' res
-#' repo = "neuroconductor-devel/gifti"
+#' repo = "neuroconductor/gifti"
 #' res = latest_release_with_binary(repo)
 #' res #'
 #' @importFrom httr GET content stop_for_status authenticate
@@ -26,7 +26,7 @@ latest_release_with_binary = function(
   pat = NULL,
   verbose = TRUE,
   check_r_version = TRUE,
-  check_sha = TRUE,
+  force_sha = TRUE,
   ...){
 
   df = binary_release_table(repo = repo, pat = pat, verbose = verbose, ...)
@@ -47,17 +47,19 @@ latest_release_with_binary = function(
 
   ddf = df
   ddf = ddf[ grep(sys_ext(), ddf$asset_name, fixed = TRUE),]
-  if (check_sha) {
-    if (!(ref %in% c("master", ""))) {
-      if (!(ref %in% ddf$commit.sha)) {
-        warning(paste0("SHA was given, but no release associated",
-                       " with it!, not installing, returning NA"))
+
+  if (!(ref %in% c("master", ""))) {
+    if (!(ref %in% ddf$commit.sha)) {
+      warning(paste0("SHA was given, but no release associated",
+                     " with it!, not installing, returning NA"))
+      if (force_sha) {
         return(NA)
-      } else {
-        ddf = ddf[ ddf$commit.sha %in% ref, ]
       }
+    } else {
+      ddf = ddf[ ddf$commit.sha %in% ref, ]
     }
   }
+
   # Neuroconductor versioning
   if (check_r_version) {
     check_str = paste0("_R", r_version(), sys_ext(), "$")

@@ -11,7 +11,7 @@
 #' @param method method to download, passed to \code{\link{download.file}}
 #' @param check_r_version Check if R version is in the name of the
 #' tarball
-#' @param check_sha Should the SHA be checked when trying to get
+#' @param force_sha Should the SHA be checked when trying to get
 #' binaries
 #' @param ... additional arguments passed to \code{\link{install.packages}}
 #'
@@ -32,7 +32,7 @@ install_remote_binaries = function(
   remotes = NULL,
   package = NULL,
   check_r_version = TRUE,
-  check_sha = TRUE,
+  force_sha = TRUE,
   # update_only = FALSE,
   verbose = TRUE,
   method = "wget",
@@ -42,7 +42,7 @@ install_remote_binaries = function(
   urls = remote_binaries(path = path, remotes = remotes,
                          verbose = verbose,
                          check_r_version = check_r_version,
-                         check_sha = check_sha)
+                         force_sha = force_sha)
   if (!is.null(package)) {
     if (all(package != "")) {
       urls = urls[intersect(package, names(urls))]

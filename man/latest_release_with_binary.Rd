@@ -5,7 +5,7 @@
 \title{Get the Latest Binary for a repository}
 \usage{
 latest_release_with_binary(repo, pat = NULL, verbose = TRUE,
-  check_r_version = TRUE, check_sha = TRUE, ...)
+  check_r_version = TRUE, force_sha = TRUE, ...)
 }
 \arguments{
 \item{repo}{Remote repository name}
@@ -17,10 +17,10 @@ latest_release_with_binary(repo, pat = NULL, verbose = TRUE,
 \item{check_r_version}{Check if R version is in the name of the
 tarball}
 
+\item{...}{additional arguments to \code{\link[httr]{GET}}}
+
 \item{check_sha}{Should the SHA be checked when trying to get
 binaries}
-
-\item{...}{additional arguments to \code{\link[httr]{GET}}}
 }
 \value{
 URL of the binary
@@ -32,7 +32,7 @@ Parses a remote and gets a URL for a binary release
 repo = "stnava/ANTsR"
 res = latest_release_with_binary(repo)
 res
-repo = "neuroconductor-devel/gifti"
+repo = "neuroconductor/gifti"
 res = latest_release_with_binary(repo)
 res #'
 }
