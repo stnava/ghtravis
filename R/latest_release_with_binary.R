@@ -50,8 +50,14 @@ latest_release_with_binary = function(
 
   if (!(ref %in% c("master", ""))) {
     if (!(ref %in% ddf$commit.sha)) {
-      warning(paste0("SHA was given, but no release associated",
-                     " with it!, not installing, returning NA"))
+      warning(paste0(
+        "SHA was given, but no release associated",
+        " with it!",
+        ifelse(force_sha,
+               "not installing, returning NA",
+               "")
+        )
+      )
       if (force_sha) {
         return(NA)
       }
