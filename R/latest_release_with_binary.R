@@ -46,7 +46,7 @@ latest_release_with_binary = function(
 
 
   ddf = df
-  ddf = ddf[ grep(sys_ext(), ddf$asset_name),]
+  ddf = ddf[ grep(release_search_ext(), ddf$asset_name),]
 
   if (!(ref %in% c("master", ""))) {
     if (!(ref %in% ddf$commit.sha)) {

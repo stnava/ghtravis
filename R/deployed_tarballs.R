@@ -67,7 +67,9 @@ deployed_tarball = function(
     stop("Version is not correctly parsed!")
   }
   # bash workaround
-  ext = sys_ext()
+  ext = release_search_ext()
+  # need for searching thing
+  ext = gsub(".*", "", ext, fixed = TRUE)
 
   package = sapply(repo, function(x) {
      x$repo

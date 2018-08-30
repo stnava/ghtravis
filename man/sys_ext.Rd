@@ -2,9 +2,12 @@
 % Please edit documentation in R/sys_ext.R
 \name{sys_ext}
 \alias{sys_ext}
+\alias{release_search_ext}
 \title{System Extension}
 \usage{
 sys_ext()
+
+release_search_ext()
 }
 \value{
 Extension for the operating system
@@ -14,4 +17,5 @@ Gets System Extension for tarball
 }
 \examples{
 sys_ext()
+release_search_ext()
 }
