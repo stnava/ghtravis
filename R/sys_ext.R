@@ -11,9 +11,9 @@ sys_ext = function(){
   os = os[["sysname"]]
   ext = switch(
     os,
-    Windows = ".zip",
-    Linux = "_R_x86_64-pc-linux-gnu.tar.gz",
-    Darwin = ".tgz"
+    Windows = ".zip$",
+    Linux = "_R_x86_64-pc-linux-gnu.*.tar.gz$",
+    Darwin = ".tgz$"
   )
   return(ext)
 }
