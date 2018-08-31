@@ -97,10 +97,10 @@ binary_release_table = function(
 
 #' @rdname binary_release_table
 #' @export
-#' @examples
 #' @param mustWork Does the command need to work?  If fails,
 #' will error.  But \code{FALSE} will try to pass
 #' appropriate missing data value
+#' @examples
 #' repo = "stnava/ANTsR"
 #' binary_table_no_tags(repo)
 #' binary_table_no_tags("muschellij2/ANTsR")

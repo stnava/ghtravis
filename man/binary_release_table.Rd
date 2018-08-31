@@ -25,11 +25,7 @@ the table even if no assets are in the release}
 
 \item{mustWork}{Does the command need to work?  If fails,
 will error.  But \code{FALSE} will try to pass
-appropriate missing data value
-repo = "stnava/ANTsR"
-binary_table_no_tags(repo)
-binary_table_no_tags("muschellij2/ANTsR")
-binary_table_no_tags("muschellij2/ANTsR", force = TRUE)}
+appropriate missing data value}
 }
 \value{
 \code{data.frame} of binary releases
@@ -41,4 +37,8 @@ Parses a remote and gets a table of binary releases
 repo = "stnava/ANTsR"
 binary_release_table(repo)
 binary_release_table("muschellij2/ANTsR")
+repo = "stnava/ANTsR"
+binary_table_no_tags(repo)
+binary_table_no_tags("muschellij2/ANTsR")
+binary_table_no_tags("muschellij2/ANTsR", force = TRUE)
 }

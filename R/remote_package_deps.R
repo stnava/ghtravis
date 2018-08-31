@@ -95,6 +95,9 @@ missing_remote_deps = function(
     path = path,
     verbose = verbose,
     ...)
+  if (is.null(res)) {
+    return(res)
+  }
   res$installed = res$name %in% installed.packages()
   if (verbose) {
     print(res[, c("name", "installed")])
