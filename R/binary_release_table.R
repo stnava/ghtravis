@@ -98,6 +98,9 @@ binary_release_table = function(
 #' @rdname binary_release_table
 #' @export
 #' @examples
+#' @param mustWork Does the command need to work?  If fails,
+#' will error.  But \code{FALSE} will try to pass
+#' appropriate missing data value
 #' repo = "stnava/ANTsR"
 #' binary_table_no_tags(repo)
 #' binary_table_no_tags("muschellij2/ANTsR")
@@ -107,6 +110,7 @@ binary_table_no_tags = function(
   pat = NULL,
   force = FALSE,
   verbose = TRUE,
+  mustWork = TRUE,
   ...){
 
   info = parse_one_remote(repo)
@@ -121,7 +125,11 @@ binary_table_no_tags = function(
   url = paste0("https://api.github.com/repos/", repo, "/releases")
 
   get_df = function(res) {
-
+    if (!mustWork) {
+      if (httr::status_code(res) > 400) {
+        return(NA)
+      }
+    }
     httr::stop_for_status(res)
     if (verbose) {
       httr::message_for_status(res)

@@ -4,12 +4,16 @@
 \alias{tag_table}
 \title{Tag Table}
 \usage{
-tag_table(repo, pat = NULL, ...)
+tag_table(repo, pat = NULL, mustWork = TRUE, ...)
 }
 \arguments{
 \item{repo}{Remote repository name}
 
 \item{pat}{GitHub Personal Authentication Token (PAT)}
+
+\item{mustWork}{Does the command need to work?  If fails,
+will error.  But \code{FALSE} will try to pass
+appropriate missing data value}
 
 \item{...}{additional arguments to \code{\link[httr]{GET}}}
 }

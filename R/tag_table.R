@@ -4,6 +4,9 @@
 #' @param repo Remote repository name
 #' @param pat GitHub Personal Authentication Token (PAT)
 #' @param ... additional arguments to \code{\link[httr]{GET}}
+#' @param mustWork Does the command need to work?  If fails,
+#' will error.  But \code{FALSE} will try to pass
+#' appropriate missing data value
 #' @return \code{data.frame} of tags
 #' @export
 #'
@@ -14,7 +17,10 @@
 #' tag_table("cran/psych@084bdd0ae2630cf31c26d97a6e13e59d3f0f66e6")
 #' @importFrom httr GET content stop_for_status authenticate message_for_status
 #' @importFrom devtools github_pat
-tag_table = function(repo, pat = NULL, ...) {
+tag_table = function(
+  repo, pat = NULL,
+  mustWork = TRUE,
+  ...) {
   if (is.null(pat)) {
     pat = devtools::github_pat(quiet = TRUE)
   }
@@ -26,8 +32,15 @@ tag_table = function(repo, pat = NULL, ...) {
 
   tag_url = paste0("https://api.github.com/repos/", repo, "/tags")
   tag_res = httr::GET(tag_url, github_auth(pat), ...)
+
+
   # args = list(url = tag_url)
   get_tag_content = function(tag_res) {
+    if (!mustWork) {
+      if (httr::status_code(tag_res) > 400) {
+        return(NULL)
+      }
+    }
     httr::stop_for_status(tag_res)
     httr::message_for_status(tag_res)
     tag_content = httr::content(tag_res)

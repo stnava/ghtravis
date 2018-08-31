@@ -9,7 +9,7 @@ binary_release_table(repo, pat = NULL, force = FALSE, verbose = TRUE,
   ...)
 
 binary_table_no_tags(repo, pat = NULL, force = FALSE, verbose = TRUE,
-  ...)
+  mustWork = TRUE, ...)
 }
 \arguments{
 \item{repo}{Remote repository name}
@@ -22,6 +22,14 @@ the table even if no assets are in the release}
 \item{verbose}{print diagnostic messages}
 
 \item{...}{additional arguments to \code{\link[httr]{GET}}}
+
+\item{mustWork}{Does the command need to work?  If fails,
+will error.  But \code{FALSE} will try to pass
+appropriate missing data value
+repo = "stnava/ANTsR"
+binary_table_no_tags(repo)
+binary_table_no_tags("muschellij2/ANTsR")
+binary_table_no_tags("muschellij2/ANTsR", force = TRUE)}
 }
 \value{
 \code{data.frame} of binary releases
@@ -33,8 +41,4 @@ Parses a remote and gets a table of binary releases
 repo = "stnava/ANTsR"
 binary_release_table(repo)
 binary_release_table("muschellij2/ANTsR")
-repo = "stnava/ANTsR"
-binary_table_no_tags(repo)
-binary_table_no_tags("muschellij2/ANTsR")
-binary_table_no_tags("muschellij2/ANTsR", force = TRUE)
 }
