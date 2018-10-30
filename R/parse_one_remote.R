@@ -4,9 +4,11 @@
 #' @param x Parses a remote field
 #' @return A repo object, from \code{devtools}
 #' @export
+#' @import remotes
 #'
 #' @examples
 #' parse_one_remote("stnava/ANTsR")
+# @return A repo object, from \code{devtools}
 parse_one_remote <- function(x) {
 
   pieces <- strsplit(x, "::", fixed = TRUE)[[1]]
@@ -23,7 +25,8 @@ parse_one_remote <- function(x) {
   }
   fun <- tryCatch(get(
     paste0(tolower(type), "_remote"),
-    envir = asNamespace("devtools"),
+    # envir = asNamespace("devtools"),
+    envir = asNamespace("remotes"),
     mode = "function", inherits = FALSE),
     error = function(e) stop("Unknown remote type: ",
                              type, call. = FALSE)
