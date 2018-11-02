@@ -35,10 +35,10 @@ Parses a remote and gets a table of binary releases
 }
 \examples{
 repo = "stnava/ANTsR"
-binary_release_table(repo)
-binary_release_table("muschellij2/ANTsR")
+# binary_release_table(repo)
+# binary_release_table("muschellij2/ANTsR")
 repo = "stnava/ANTsR"
-binary_table_no_tags(repo)
-binary_table_no_tags("muschellij2/ANTsR")
-binary_table_no_tags("muschellij2/ANTsR", force = TRUE)
+# binary_table_no_tags(repo)
+# binary_table_no_tags("muschellij2/ANTsR")
+# binary_table_no_tags("muschellij2/ANTsR", force = TRUE)
 }

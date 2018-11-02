@@ -13,8 +13,8 @@
 #'
 #' @examples
 #' repo = "stnava/ANTsR"
-#' binary_release_table(repo)
-#' binary_release_table("muschellij2/ANTsR")
+#' # binary_release_table(repo)
+#' # binary_release_table("muschellij2/ANTsR")
 #' @importFrom httr GET content stop_for_status authenticate
 #' @importFrom devtools github_pat
 binary_release_table = function(
@@ -102,9 +102,9 @@ binary_release_table = function(
 #' appropriate missing data value
 #' @examples
 #' repo = "stnava/ANTsR"
-#' binary_table_no_tags(repo)
-#' binary_table_no_tags("muschellij2/ANTsR")
-#' binary_table_no_tags("muschellij2/ANTsR", force = TRUE)
+#' # binary_table_no_tags(repo)
+#' # binary_table_no_tags("muschellij2/ANTsR")
+#' # binary_table_no_tags("muschellij2/ANTsR", force = TRUE)
 binary_table_no_tags = function(
   repo,
   pat = NULL,
